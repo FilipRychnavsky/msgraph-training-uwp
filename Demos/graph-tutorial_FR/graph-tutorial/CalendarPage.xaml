@@ -5,10 +5,35 @@
     xmlns:local="using:graph_tutorial"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-		<TextBlock x:Name="Events" TextWrapping="Wrap"/>
+	<Grid>
+		<controls:DataGrid x:Name="EventList" Grid.Row="1"
+                AutoGenerateColumns="False">
+			<controls:DataGrid.Columns>
+				<controls:DataGridTextColumn
+                        Header="Organizer"
+                        Width="SizeToCells"
+                        Binding="{Binding Organizer.EmailAddress.Name}"
+                        FontSize="20" />
+				<controls:DataGridTextColumn
+                        Header="Subject"
+                        Width="SizeToCells"
+                        Binding="{Binding Subject}"
+                        FontSize="20" />
+				<controls:DataGridTextColumn
+                        Header="Start"
+                        Width="SizeToCells"
+                        Binding="{Binding Start.DateTime}"
+                        FontSize="20" />
+				<controls:DataGridTextColumn
+                        Header="End"
+                        Width="SizeToCells"
+                        Binding="{Binding End.DateTime}"
+                        FontSize="20" />
+			</controls:DataGrid.Columns>
+		</controls:DataGrid>
 	</Grid>
 </Page>

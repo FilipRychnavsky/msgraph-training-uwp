@@ -53,7 +53,8 @@ namespace graph_tutorial
 						.GetAsync();
 
 				// TEMPORARY: Show the results as JSON
-				Events.Text = JsonConvert.SerializeObject(events.CurrentPage);
+				//Events.Text = JsonConvert.SerializeObject(events.CurrentPage);
+				EventList.ItemsSource = events.CurrentPage.ToList();
 			} catch (Microsoft.Graph.ServiceException ex) {
 				ShowNotification($"Exception getting events: {ex.Message}");
 			}
