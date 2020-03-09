@@ -40,6 +40,7 @@
 			this.m_rButtonConnect.TabIndex = 0;
 			this.m_rButtonConnect.Text = "Connect";
 			this.m_rButtonConnect.UseVisualStyleBackColor = false;
+			this.m_rButtonConnect.Click += new System.EventHandler(this.m_rButtonConnect_Click);
 			// 
 			// m_rTextBoxResult
 			// 
