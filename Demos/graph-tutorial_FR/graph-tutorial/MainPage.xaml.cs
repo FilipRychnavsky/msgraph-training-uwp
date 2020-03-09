@@ -69,5 +69,20 @@ namespace graph_tutorial
 					break;
 			}
 		}
+		private void Login_SignInCompleted(object sender, Microsoft.Toolkit.Uwp.UI.Controls.Graph.SignInEventArgs e)
+		{
+			// Set the auth state
+			SetAuthState(true);
+			// Reload the home page
+			RootFrame.Navigate(typeof(HomePage));
+		}
+
+		private void Login_SignOutCompleted(object sender, EventArgs e)
+		{
+			// Set the auth state
+			SetAuthState(false);
+			// Reload the home page
+			RootFrame.Navigate(typeof(HomePage));
+		}
 	}
 }
