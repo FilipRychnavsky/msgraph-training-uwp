@@ -8,7 +8,9 @@
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+	<Page.Resources>
+		<local:GraphDateTimeTimeZoneConverter x:Key="DateTimeTimeZoneValueConverter" />
+	</Page.Resources>
 	<Grid>
 		<controls:DataGrid x:Name="EventList" Grid.Row="1"
                 AutoGenerateColumns="False">
@@ -26,12 +28,12 @@
 				<controls:DataGridTextColumn
                         Header="Start"
                         Width="SizeToCells"
-                        Binding="{Binding Start.DateTime}"
+                        Binding="{Binding Start, Converter={StaticResource DateTimeTimeZoneValueConverter}}"
                         FontSize="20" />
 				<controls:DataGridTextColumn
                         Header="End"
                         Width="SizeToCells"
-                        Binding="{Binding End.DateTime}"
+                        Binding="{Binding End, Converter={StaticResource DateTimeTimeZoneValueConverter}}"
                         FontSize="20" />
 			</controls:DataGrid.Columns>
 		</controls:DataGrid>
