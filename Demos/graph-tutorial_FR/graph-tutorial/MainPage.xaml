@@ -17,10 +17,12 @@
 
 			<NavigationView.Header>
 				<graphControls:AadLogin x:Name="Login"
-                    HorizontalAlignment="Left"
-                    View="SmallProfilePhotoLeft"
-                    AllowSignInAsDifferentUser="False"
-                    />
+					HorizontalAlignment="Left"
+					View="SmallProfilePhotoLeft"
+					AllowSignInAsDifferentUser="False"
+					SignInCompleted="Login_SignInCompleted"
+					SignOutCompleted="Login_SignOutCompleted"
+					/>
 			</NavigationView.Header>
 
 			<NavigationView.MenuItems>
