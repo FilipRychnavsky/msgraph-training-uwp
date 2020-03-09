@@ -17,14 +17,40 @@ using Windows.UI.Xaml.Navigation;
 
 namespace graph_tutorial
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
-    public sealed partial class MainPage : Page
-    {
-        public MainPage()
-        {
-            this.InitializeComponent();
-        }
-    }
+	/// <summary>
+	/// An empty page that can be used on its own or navigated to within a Frame.
+	/// </summary>
+	public sealed partial class MainPage : Page
+	{
+		public MainPage()
+		{
+			this.InitializeComponent();
+			// Initialize auth state to false
+			SetAuthState(false);
+
+			// Navigate to HomePage.xaml
+			RootFrame.Navigate(typeof(HomePage));
+		}
+		private void SetAuthState(bool isAuthenticated)
+		{
+			(App.Current as App).IsAuthenticated = isAuthenticated;
+
+			// Toggle controls that require auth
+			Calendar.IsEnabled = isAuthenticated;
+		}
+		private void NavView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
+		{
+			var invokedItem = args.InvokedItem as string;
+
+			switch (invokedItem.ToLower()) {
+				case "calendar":
+					throw new NotImplementedException();
+					break;
+				case "home":
+				default:
+					RootFrame.Navigate(typeof(HomePage));
+					break;
+			}
+		}
+	}
 }

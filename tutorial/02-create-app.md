@@ -38,6 +38,7 @@ public bool IsAuthenticated { get; set; }
 ```
 
 Next, define the layout for the main page. Open `MainPage.xaml` and replace its entire contents with the following.
+
 (FR: Open With - Source Code (Text) Editor)
 
 ```xml
@@ -147,5 +148,6 @@ Save all of your changes, then press **F5** or select **Debug > Start Debugging*
 
 > [!NOTE]
 > Make sure you select the appropriate configuration for your machine (ARM, x64, x86).
+> FR: x64
 
 ![A screenshot of the home page](./images/create-app-01.png)
