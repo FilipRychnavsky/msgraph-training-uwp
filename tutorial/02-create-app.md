@@ -38,6 +38,7 @@ public bool IsAuthenticated { get; set; }
 ```
 
 Next, define the layout for the main page. Open `MainPage.xaml` and replace its entire contents with the following.
+(FR: Open With - Source Code (Text) Editor)
 
 ```xml
 <Page
