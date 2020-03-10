@@ -23,9 +23,10 @@ namespace Demo_MS_Graph_SDK
 
 		private void m_rButtonConnect_Click(object sender, EventArgs e)
 		{
-			const string resxFile = @"..\graph-tutorial\OAuth.resw";
+			const string resxFile = @".\OAuth.resx";
+			//System.Resources.ResourceManager oauthSettings = new System.Resources.ResourceManager("OAuth", typeof(Form1).Assembly);
 			// statt ResourceLoader von UWP benutze ich C# App Resoucen
-			ResXResourceSet oauthSettings = new ResXResourceSet(resxFile);
+			//ResXResourceSet oauthSettings = new ResXResourceSet(resxFile);
 			// Build a client application.
 			var appId = oauthSettings.GetString("AppId");
 			IPublicClientApplication publicClientApplication = PublicClientApplicationBuilder
