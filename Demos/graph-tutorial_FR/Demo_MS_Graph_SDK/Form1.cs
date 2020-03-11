@@ -22,7 +22,7 @@ namespace Demo_MS_Graph_SDK
 			InitializeComponent();
 		}
 
-		private async void m_rButtonConnect_Click(object sender, EventArgs e)
+		private async void m_rButtonConnect_InteractiveAuthenticationProvider_Click(object sender, EventArgs e)
 		{
 			// Build a client application.
 			var appId = OAuth.AppId;
@@ -43,8 +43,7 @@ namespace Demo_MS_Graph_SDK
 			InteractiveAuthenticationProvider authProvider = new InteractiveAuthenticationProvider(publicClientApplication, rIEnumerableGraphScopes);
 			// Create a new instance of GraphServiceClient with the authentication provider.
 			GraphServiceClient graphClient = new GraphServiceClient(authProvider);
-			//var user = await graphClient.Me.Request();
-			//int n = 0;
+
 			User user = await graphClient.Me
 										.Request()
 										.Select(u => new

@@ -27,20 +27,20 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.m_rButtonConnect = new System.Windows.Forms.Button();
+			this.m_rButtonConnect_InteractiveAuthenticationProvider = new System.Windows.Forms.Button();
 			this.m_rTextBoxResult = new System.Windows.Forms.TextBox();
 			this.SuspendLayout();
 			// 
-			// m_rButtonConnect
+			// m_rButtonConnect_InteractiveAuthenticationProvider
 			// 
-			this.m_rButtonConnect.BackColor = System.Drawing.Color.PaleGreen;
-			this.m_rButtonConnect.Location = new System.Drawing.Point(30, 15);
-			this.m_rButtonConnect.Name = "m_rButtonConnect";
-			this.m_rButtonConnect.Size = new System.Drawing.Size(118, 48);
-			this.m_rButtonConnect.TabIndex = 0;
-			this.m_rButtonConnect.Text = "Connect";
-			this.m_rButtonConnect.UseVisualStyleBackColor = false;
-			this.m_rButtonConnect.Click += new System.EventHandler(this.m_rButtonConnect_Click);
+			this.m_rButtonConnect_InteractiveAuthenticationProvider.BackColor = System.Drawing.Color.PaleGreen;
+			this.m_rButtonConnect_InteractiveAuthenticationProvider.Location = new System.Drawing.Point(30, 15);
+			this.m_rButtonConnect_InteractiveAuthenticationProvider.Name = "m_rButtonConnect_InteractiveAuthenticationProvider";
+			this.m_rButtonConnect_InteractiveAuthenticationProvider.Size = new System.Drawing.Size(199, 48);
+			this.m_rButtonConnect_InteractiveAuthenticationProvider.TabIndex = 0;
+			this.m_rButtonConnect_InteractiveAuthenticationProvider.Text = "Connect via InteractiveAuthenticationProvider";
+			this.m_rButtonConnect_InteractiveAuthenticationProvider.UseVisualStyleBackColor = false;
+			this.m_rButtonConnect_InteractiveAuthenticationProvider.Click += new System.EventHandler(this.m_rButtonConnect_InteractiveAuthenticationProvider_Click);
 			// 
 			// m_rTextBoxResult
 			// 
@@ -56,7 +56,7 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(800, 450);
 			this.Controls.Add(this.m_rTextBoxResult);
-			this.Controls.Add(this.m_rButtonConnect);
+			this.Controls.Add(this.m_rButtonConnect_InteractiveAuthenticationProvider);
 			this.Name = "Form1";
 			this.Text = "Form1";
 			this.ResumeLayout(false);
@@ -66,7 +66,7 @@
 
 		#endregion
 
-		private System.Windows.Forms.Button m_rButtonConnect;
+		private System.Windows.Forms.Button m_rButtonConnect_InteractiveAuthenticationProvider;
 		private System.Windows.Forms.TextBox m_rTextBoxResult;
 	}
 }
