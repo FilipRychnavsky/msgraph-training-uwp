@@ -55,5 +55,36 @@ namespace Demo_MS_Graph_SDK
 			Debug.WriteLine("after calling");
 			m_rTextBoxResult.Text += System.String.Format("\nName: {0} JobTitle: {1}", user.DisplayName, user.JobTitle);
 		}
+
+		private void m_rButton_OAuth20_Click(object sender, EventArgs e)
+		{
+			// Build a client application.
+			var appId = OAuth.AppId;
+//TODO Redirect URI und Secret
+			IPublicClientApplication publicClientApplication = PublicClientApplicationBuilder
+									.Create(appId)
+
+									.Build();
+			string sScopes = OAuth.Scopes;
+			// Create an authentication provider by passing in a client application and graph scopes.
+			System.Collections.Generic.IEnumerable<string> rIEnumerableGraphScopes = new System.Collections.Generic.List<string>();
+			rIEnumerableGraphScopes = rIEnumerableGraphScopes.Append(sScopes);
+
+			// https://docs.microsoft.com/en-us/graph/sdks/choose-authentication-providers?tabs=CS#authorization-code-provider
+			//TODO InteractiveAuthenticationProvider authProvider = new InteractiveAuthenticationProvider(publicClientApplication, rIEnumerableGraphScopes);
+			// Create a new instance of GraphServiceClient with the authentication provider.
+			GraphServiceClient graphClient = new GraphServiceClient(authProvider);
+
+			User user = await graphClient.Me
+										.Request()
+										.Select(u => new
+										{
+											u.DisplayName,
+											u.JobTitle
+										})
+										.GetAsync();
+			Debug.WriteLine("after calling");
+			m_rTextBoxResult.Text += System.String.Format("\nName: {0} JobTitle: {1}", user.DisplayName, user.JobTitle);
+		}
 	}
 }
