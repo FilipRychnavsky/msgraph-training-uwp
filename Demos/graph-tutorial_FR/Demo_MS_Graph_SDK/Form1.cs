@@ -11,6 +11,7 @@ using Microsoft.Graph;
 using Microsoft.Graph.Auth;
 using Microsoft.Identity.Client;
 using System.Resources;
+using System.Diagnostics;
 
 namespace Demo_MS_Graph_SDK
 {
@@ -43,7 +44,14 @@ namespace Demo_MS_Graph_SDK
 			//int n = 0;
 			User user = await graphClient.Me
 										.Request()
+										.Select(u => new
+										{
+											u.DisplayName,
+											u.JobTitle
+										})
 										.GetAsync();
+			Debug.WriteLine("after calling");
+			Debug.WriteLine(System.String.Format("Name: {0} JobTitle: {1}", user.DisplayName, user.JobTitle));
 		}
 	}
 }
