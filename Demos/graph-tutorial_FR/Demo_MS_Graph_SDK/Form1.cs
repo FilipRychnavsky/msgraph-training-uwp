@@ -61,9 +61,12 @@ namespace Demo_MS_Graph_SDK
 			// Build a client application.
 			var appId = OAuth.AppId;
 //TODO Redirect URI und Secret
-			IPublicClientApplication publicClientApplication = PublicClientApplicationBuilder
+				string sClientSecret = "";
+				string sRedirectURI = "urn:ietf:wg:oauth:2.0:oob";
+			IConfidentialClientApplication  rConfidentialClientApplication = ConfidentialClientApplicationBuilder
 									.Create(appId)
-
+									.WithRedirectUri(sRedirectURI)
+									.WithClientSecret(sClientSecret)
 									.Build();
 			string sScopes = OAuth.Scopes;
 			// Create an authentication provider by passing in a client application and graph scopes.
