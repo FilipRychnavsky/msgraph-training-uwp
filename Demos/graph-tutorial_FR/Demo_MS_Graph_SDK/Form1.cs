@@ -33,12 +33,14 @@ namespace Demo_MS_Graph_SDK
 			// Create an authentication provider by passing in a client application and graph scopes.
 			System.Collections.Generic.IEnumerable<string> rIEnumerableGraphScopes = new System.Collections.Generic.List<string>();
 			rIEnumerableGraphScopes = rIEnumerableGraphScopes.Append(sScopes);
+
 			// Device code provider führt zur folgenden exception
 			// Original exception: AADSTS70002: The provided client is not supported for this feature. The client application must be marked as 'mobile.'
-			DeviceCodeProvider authProvider = new DeviceCodeProvider(publicClientApplication, rIEnumerableGraphScopes);
-			//TODO Interactive provider
+			//DeviceCodeProvider authProvider = new DeviceCodeProvider(publicClientApplication, rIEnumerableGraphScopes);
+
+			// Interactive provider
 			// https://github.com/AzureAD/microsoft-authentication-library-for-dotnet/wiki/Acquiring-tokens-interactively
-			//InteractiveAuthenticationProvider authProvider = new InteractiveAuthenticationProvider(publicClientApplication, rIEnumerableGraphScopes);
+			InteractiveAuthenticationProvider authProvider = new InteractiveAuthenticationProvider(publicClientApplication, rIEnumerableGraphScopes);
 			// Create a new instance of GraphServiceClient with the authentication provider.
 			GraphServiceClient graphClient = new GraphServiceClient(authProvider);
 			//var user = await graphClient.Me.Request();
@@ -52,7 +54,7 @@ namespace Demo_MS_Graph_SDK
 										})
 										.GetAsync();
 			Debug.WriteLine("after calling");
-			Debug.WriteLine(System.String.Format("Name: {0} JobTitle: {1}", user.DisplayName, user.JobTitle));
+			m_rTextBoxResult.Text += System.String.Format("\nName: {0} JobTitle: {1}", user.DisplayName, user.JobTitle);
 		}
 	}
 }
