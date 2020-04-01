@@ -39,19 +39,8 @@ namespace Demo_MS_Graph_SDK
 			rIEnumerableGraphScopes_result = rIEnumerableGraphScopes_result.Append(sScopes);
 			return rIEnumerableGraphScopes_result;
 		}
-
-		private async void m_rButtonConnect_InteractiveAuthenticationProvider_Click(object sender, EventArgs e)
+		private async Task CreateClientAndCallGraph(InteractiveAuthenticationProvider authProvider)
 		{
-			// Build a client application.
-			// Device code provider führt zur folgenden exception
-			// Original exception: AADSTS70002: The provided client is not supported for this feature. The client application must be marked as 'mobile.'
-			//DeviceCodeProvider authProvider = new DeviceCodeProvider(publicClientApplication, rIEnumerableGraphScopes);
-
-			// Create an authentication provider by passing in a client application and graph scopes.
-			// Interactive provider
-			// https://github.com/AzureAD/microsoft-authentication-library-for-dotnet/wiki/Acquiring-tokens-interactively
-			InteractiveAuthenticationProvider authProvider = new InteractiveAuthenticationProvider(GetPublicClientApplication(), GetGraphScopes());
-			// Create a new instance of GraphServiceClient with the authentication provider.
 			GraphServiceClient graphClient = new GraphServiceClient(authProvider);
 
 			User user = await graphClient.Me
@@ -65,6 +54,22 @@ namespace Demo_MS_Graph_SDK
 			Debug.WriteLine("after calling");
 			m_rTextBoxResult.Text += System.String.Format("\nName: {0} JobTitle: {1}", user.DisplayName, user.JobTitle);
 		}
+
+		//Device CodeProvide
+		// Device code provider führt zur folgenden exception
+		// Original exception: AADSTS70002: The provided client is not supported for this feature. The client application must be marked as 'mobile.'
+		//DeviceCodeProvider authProvider = new DeviceCodeProvider(publicClientApplication, rIEnumerableGraphScopes);
+
+		private async void m_rButtonConnect_InteractiveAuthenticationProvider_Click(object sender, EventArgs e)
+		{
+			// Interactive provider - The interactive flow is used by mobile applications (Xamarin and UWP) and desktops applications to call Microsoft Graph in the name of a user. 
+			// Create an authentication provider by passing in a client application and graph scopes.
+			// https://github.com/AzureAD/microsoft-authentication-library-for-dotnet/wiki/Acquiring-tokens-interactively
+			InteractiveAuthenticationProvider authProvider = new InteractiveAuthenticationProvider(GetPublicClientApplication(), GetGraphScopes());
+			// Create a new instance of GraphServiceClient with the authentication provider.
+			await CreateClientAndCallGraph(authProvider);
+		}
+
 
 		private void m_rButton_OAuth20_Click(object sender, EventArgs e)
 		{
