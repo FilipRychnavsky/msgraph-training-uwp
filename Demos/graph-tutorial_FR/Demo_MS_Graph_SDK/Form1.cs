@@ -75,6 +75,7 @@ namespace Demo_MS_Graph_SDK
 		{
 			// Build a client application.
 			var appId = OAuth.AppId;
+			//TODO_FR 150 secret für OAuth20
 			string sClientSecret = "";
 			string sRedirectURI = "urn:ietf:wg:oauth:2.0:oob";
 			IConfidentialClientApplication rConfidentialClientApplication = ConfidentialClientApplicationBuilder
@@ -84,7 +85,6 @@ namespace Demo_MS_Graph_SDK
 									.Build();
 
 			// https://docs.microsoft.com/en-us/graph/sdks/choose-authentication-providers?tabs=CS#authorization-code-provider
-			//TODO_FR 150 refactor m_rButton_OAuth20_Click
 			AuthorizationCodeProvider authProvider = new AuthorizationCodeProvider(rConfidentialClientApplication, GetGraphScopes());
 			await CreateClientAndCallGraph(authProvider);
 		}
