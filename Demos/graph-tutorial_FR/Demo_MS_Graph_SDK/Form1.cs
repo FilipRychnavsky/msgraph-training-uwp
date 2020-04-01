@@ -24,6 +24,7 @@ namespace Demo_MS_Graph_SDK
 
 		private async void m_rButtonConnect_InteractiveAuthenticationProvider_Click(object sender, EventArgs e)
 		{
+//TODO_FR 130 refactor m_rButtonConnect_InteractiveAuthenticationProvider_Click
 			// Build a client application.
 			var appId = OAuth.AppId;
 			IPublicClientApplication publicClientApplication = PublicClientApplicationBuilder
@@ -58,6 +59,8 @@ namespace Demo_MS_Graph_SDK
 
 		private void m_rButton_OAuth20_Click(object sender, EventArgs e)
 		{
+//TODO_FR 150 refactor m_rButton_OAuth20_Click
+/*
 			// Build a client application.
 			var appId = OAuth.AppId;
 //TODO Redirect URI und Secret
@@ -88,6 +91,7 @@ namespace Demo_MS_Graph_SDK
 										.GetAsync();
 			Debug.WriteLine("after calling");
 			m_rTextBoxResult.Text += System.String.Format("\nName: {0} JobTitle: {1}", user.DisplayName, user.JobTitle);
+*/
 		}
 	}
 }
