@@ -22,26 +22,35 @@ namespace Demo_MS_Graph_SDK
 			InitializeComponent();
 		}
 
-		private async void m_rButtonConnect_InteractiveAuthenticationProvider_Click(object sender, EventArgs e)
+		IPublicClientApplication GetPublicClientApplication()
 		{
-//TODO_FR 130 refactor m_rButtonConnect_InteractiveAuthenticationProvider_Click
-			// Build a client application.
+			IPublicClientApplication rIPublicClientApplication = null;
 			var appId = OAuth.AppId;
-			IPublicClientApplication publicClientApplication = PublicClientApplicationBuilder
+			rIPublicClientApplication = PublicClientApplicationBuilder
 									.Create(appId)
 									.Build();
-			string sScopes = OAuth.Scopes;
-			// Create an authentication provider by passing in a client application and graph scopes.
-			System.Collections.Generic.IEnumerable<string> rIEnumerableGraphScopes = new System.Collections.Generic.List<string>();
-			rIEnumerableGraphScopes = rIEnumerableGraphScopes.Append(sScopes);
+			return rIPublicClientApplication;
+		}
 
+		private static System.Collections.Generic.IEnumerable<string> GetGraphScopes()
+		{
+			System.Collections.Generic.IEnumerable<string> rIEnumerableGraphScopes_result = new System.Collections.Generic.List<string>();
+			string sScopes = OAuth.Scopes;
+			rIEnumerableGraphScopes_result = rIEnumerableGraphScopes_result.Append(sScopes);
+			return rIEnumerableGraphScopes_result;
+		}
+
+		private async void m_rButtonConnect_InteractiveAuthenticationProvider_Click(object sender, EventArgs e)
+		{
+			// Build a client application.
 			// Device code provider führt zur folgenden exception
 			// Original exception: AADSTS70002: The provided client is not supported for this feature. The client application must be marked as 'mobile.'
 			//DeviceCodeProvider authProvider = new DeviceCodeProvider(publicClientApplication, rIEnumerableGraphScopes);
 
+			// Create an authentication provider by passing in a client application and graph scopes.
 			// Interactive provider
 			// https://github.com/AzureAD/microsoft-authentication-library-for-dotnet/wiki/Acquiring-tokens-interactively
-			InteractiveAuthenticationProvider authProvider = new InteractiveAuthenticationProvider(publicClientApplication, rIEnumerableGraphScopes);
+			InteractiveAuthenticationProvider authProvider = new InteractiveAuthenticationProvider(GetPublicClientApplication(), GetGraphScopes());
 			// Create a new instance of GraphServiceClient with the authentication provider.
 			GraphServiceClient graphClient = new GraphServiceClient(authProvider);
 
