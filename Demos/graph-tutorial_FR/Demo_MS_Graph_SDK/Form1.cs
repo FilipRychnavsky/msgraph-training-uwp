@@ -39,7 +39,7 @@ namespace Demo_MS_Graph_SDK
 			rIEnumerableGraphScopes_result = rIEnumerableGraphScopes_result.Append(sScopes);
 			return rIEnumerableGraphScopes_result;
 		}
-		private async Task CreateClientAndCallGraph(InteractiveAuthenticationProvider authProvider)
+		private async Task CreateClientAndCallGraph(IAuthenticationProvider authProvider)
 		{
 			GraphServiceClient graphClient = new GraphServiceClient(authProvider);
 
