@@ -75,10 +75,10 @@ namespace Demo_MS_Graph_SDK
 		{
 			try {
 				// Build a client application.
-				var appId = OAuth.AppId;
+				var appId = OAuth_ApplicationPermissions.AppId;
 				//TODO_FR 150 secret für OAuth20 Für Anton05 seinen Display Name holen
 				// https://aad.portal.azure.com
-				string sClientSecret = OAuth.Secret;
+				string sClientSecret = OAuth_ApplicationPermissions.Secret;
 				string sRedirectURI = "urn:ietf:wg:oauth:2.0:oob";
 				IConfidentialClientApplication rConfidentialClientApplication = ConfidentialClientApplicationBuilder
 										.Create(appId)
