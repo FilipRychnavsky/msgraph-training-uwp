@@ -77,5 +77,14 @@ namespace Demo_MS_Graph_SDK {
                 return ResourceManager.GetString("Scopes", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to muaMAi5O6m50cLomt?IRJQURtsCwe@]_.
+        /// </summary>
+        internal static string Secret {
+            get {
+                return ResourceManager.GetString("Secret", resourceCulture);
+            }
+        }
     }
 }

@@ -123,4 +123,7 @@
   <data name="Scopes" xml:space="preserve">
     <value>User.Read Calendars.Read</value>
   </data>
+  <data name="Secret" xml:space="preserve">
+    <value>muaMAi5O6m50cLomt?IRJQURtsCwe@]_</value>
+  </data>
 </root>
