@@ -76,7 +76,7 @@ namespace Demo_MS_Graph_SDK
 			try {
 				// Build a client application.
 				var appId = OAuth.AppId;
-				//TODO_FR 150 secret für OAuth20
+				//TODO_FR 150 secret für OAuth20 Für Anton05 seinen Display Name holen
 				// https://aad.portal.azure.com
 				string sClientSecret = OAuth.Secret;
 				string sRedirectURI = "urn:ietf:wg:oauth:2.0:oob";
@@ -87,6 +87,7 @@ namespace Demo_MS_Graph_SDK
 										.Build();
 
 				// https://docs.microsoft.com/en-us/graph/sdks/choose-authentication-providers?tabs=CS#authorization-code-provider
+				// https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow
 				AuthorizationCodeProvider authProvider = new AuthorizationCodeProvider(rConfidentialClientApplication, GetGraphScopes());
 				await CreateClientAndCallGraph(authProvider);
 			} catch (Microsoft.Graph.ServiceException rException) {
