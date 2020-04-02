@@ -73,20 +73,28 @@ namespace Demo_MS_Graph_SDK
 
 		private async void m_rButton_OAuth20_Click(object sender, EventArgs e)
 		{
-			// Build a client application.
-			var appId = OAuth.AppId;
-			//TODO_FR 150 secret für OAuth20
-			string sClientSecret = "";
-			string sRedirectURI = "urn:ietf:wg:oauth:2.0:oob";
-			IConfidentialClientApplication rConfidentialClientApplication = ConfidentialClientApplicationBuilder
-									.Create(appId)
-									.WithRedirectUri(sRedirectURI)
-									.WithClientSecret(sClientSecret)
-									.Build();
+			try {
+				// Build a client application.
+				var appId = OAuth.AppId;
+				//TODO_FR 150 secret für OAuth20
+				// https://aad.portal.azure.com
+				string sClientSecret = OAuth.Secret;
+				string sRedirectURI = "urn:ietf:wg:oauth:2.0:oob";
+				IConfidentialClientApplication rConfidentialClientApplication = ConfidentialClientApplicationBuilder
+										.Create(appId)
+										.WithRedirectUri(sRedirectURI)
+										.WithClientSecret(sClientSecret)
+										.Build();
 
-			// https://docs.microsoft.com/en-us/graph/sdks/choose-authentication-providers?tabs=CS#authorization-code-provider
-			AuthorizationCodeProvider authProvider = new AuthorizationCodeProvider(rConfidentialClientApplication, GetGraphScopes());
-			await CreateClientAndCallGraph(authProvider);
+				// https://docs.microsoft.com/en-us/graph/sdks/choose-authentication-providers?tabs=CS#authorization-code-provider
+				AuthorizationCodeProvider authProvider = new AuthorizationCodeProvider(rConfidentialClientApplication, GetGraphScopes());
+				await CreateClientAndCallGraph(authProvider);
+			} catch (Microsoft.Graph.ServiceException rException) {
+				m_rTextBoxResult.Text += System.String.Format("\nException in m_rButton_OAuth20_Click:\n{0}", rException.Message);
+				if (rException.InnerException != null) {
+					m_rTextBoxResult.Text += System.String.Format("\nInner Exception:\n{0}", rException.InnerException.Message);
+				}
+			}
 		}
 	}
 }
