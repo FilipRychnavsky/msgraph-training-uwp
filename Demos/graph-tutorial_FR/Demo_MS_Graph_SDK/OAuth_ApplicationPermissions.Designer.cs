@@ -59,5 +59,23 @@ namespace Demo_MS_Graph_SDK {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 85b6abe9-00b1-4cf9-8c66-2409c07568ae.
+        /// </summary>
+        internal static string AppId {
+            get {
+                return ResourceManager.GetString("AppId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 2g6LIHi3?xDC:FQ]E.j6XS@IDu=mG.qZ.
+        /// </summary>
+        internal static string Secret {
+            get {
+                return ResourceManager.GetString("Secret", resourceCulture);
+            }
+        }
     }
 }
