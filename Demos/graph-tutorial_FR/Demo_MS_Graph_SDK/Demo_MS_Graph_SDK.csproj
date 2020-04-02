@@ -94,6 +94,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>OAuth.resx</DependentUpon>
     </Compile>
+    <Compile Include="OAuth_ApplicationPermissions.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OAuth_ApplicationPermissions.resx</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
@@ -102,6 +107,10 @@
     <EmbeddedResource Include="OAuth.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>OAuth.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OAuth_ApplicationPermissions.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>OAuth_ApplicationPermissions.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
