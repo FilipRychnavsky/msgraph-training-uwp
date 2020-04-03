@@ -86,5 +86,14 @@ namespace Demo_MS_Graph_SDK {
                 return ResourceManager.GetString("Secret", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 81d7015c-b0b5-4510-ab3f-77f5ba091564.
+        /// </summary>
+        internal static string Tenant {
+            get {
+                return ResourceManager.GetString("Tenant", resourceCulture);
+            }
+        }
     }
 }

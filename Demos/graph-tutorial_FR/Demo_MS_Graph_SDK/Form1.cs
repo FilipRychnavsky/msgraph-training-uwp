@@ -79,8 +79,7 @@ namespace Demo_MS_Graph_SDK
 				// https://aad.portal.azure.com
 				string sClientSecret = OAuth_ApplicationPermissions.Secret;
 				string sInstanceOfAzure = "https://login.microsoftonline.com/{0}";
-				// AppId ist wie Tenant
-				string sAuthority = String.Format(System.Globalization.CultureInfo.InvariantCulture, sInstanceOfAzure, appId);
+				string sAuthority = String.Format(System.Globalization.CultureInfo.InvariantCulture, sInstanceOfAzure, OAuth_ApplicationPermissions.Tenant);
 				IConfidentialClientApplication rConfidentialClientApplication = ConfidentialClientApplicationBuilder
 										.Create(appId)
 										.WithClientSecret(sClientSecret)
@@ -89,7 +88,7 @@ namespace Demo_MS_Graph_SDK
 				// https://docs.microsoft.com/en-us/graph/sdks/choose-authentication-providers?tabs=CS#authorization-code-provider
 				// https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow
 				// Demo für daemon in console un OAuth 2.0 https://github.com/Azure-Samples/active-directory-dotnetcore-daemon-v2/blob/master/1-Call-MSGraph/README.md
-				//TODO_FR 130 Brauche ich den AuthorizationCodeProvider? - in daemon demo ist er nicht notwendig
+
 				//TODO_FR 140 scopes daemon demo "https://graph.microsoft.com/.default"
 				// With client credentials flows the scopes is ALWAYS of the shape "resource/.default", as the 
 				// application permissions need to be set statically (in the portal or by PowerShell), and then granted by
@@ -98,12 +97,22 @@ namespace Demo_MS_Graph_SDK
 
 				//AuthorizationCodeProvider authProvider = new AuthorizationCodeProvider(rConfidentialClientApplication, GetGraphScopes());
 				//TODO_FR 140 application - AcquireTokenForClient(scopes)
-				/*
-												result = await app.AcquireTokenForClient(scopes)
-														.ExecuteAsync();
-				*/
+				AuthenticationResult result = null;
+				try {
+					result = await rConfidentialClientApplication.AcquireTokenForClient(scopes)
+							.ExecuteAsync();
+					Console.ForegroundColor = ConsoleColor.Green;
+					Console.WriteLine("Token acquired");
+					Console.ResetColor();
+				} catch (MsalServiceException ex) when (ex.Message.Contains("AADSTS70011")) {
+					// Invalid scope. The scope has to be of the form "https://resourceurl/.default"
+					// Mitigation: change the scope to be as expected
+					Console.ForegroundColor = ConsoleColor.Red;
+					Console.WriteLine("Scope provided is not supported");
+					Console.ResetColor();
+				}      
 				//await CreateClientAndCallGraph(authProvider);
-				//TODO_FR 150 Api caller
+				//TODO_FR 150 Api caller; token verwenden ?
 				/*
 								GraphServiceClient graphClient = new GraphServiceClient(authProvider);
 								User user = await graphClient.Me
