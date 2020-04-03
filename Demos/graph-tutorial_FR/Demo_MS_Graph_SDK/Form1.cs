@@ -73,7 +73,7 @@ namespace Demo_MS_Graph_SDK
 
 		private async void m_rButton_OAuth20_Click(object sender, EventArgs e)
 		{
-			m_rTextBoxResult.Text += System.String.Format("\nm_rButton_OAuth20_Click Start\n");
+			m_rTextBoxResult.Text +=  System.Environment.NewLine + "m_rButton_OAuth20_Click Start" + System.Environment.NewLine;
 			try {
 				// Build a client application.
 				var appId = OAuth_ApplicationPermissions.AppId;
@@ -102,7 +102,7 @@ namespace Demo_MS_Graph_SDK
 				try {
 					result = await rConfidentialClientApplication.AcquireTokenForClient(scopes)
 							.ExecuteAsync();
-					m_rTextBoxResult.Text += System.String.Format("Token acquired\n");
+					m_rTextBoxResult.Text += "Token acquired" + System.Environment.NewLine;
 				} catch (MsalServiceException ex) when (ex.Message.Contains("AADSTS70011")) {
 					// Invalid scope. The scope has to be of the form "https://resourceurl/.default"
 					// Mitigation: change the scope to be as expected
