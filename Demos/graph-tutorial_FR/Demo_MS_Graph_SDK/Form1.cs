@@ -90,29 +90,34 @@ namespace Demo_MS_Graph_SDK
 										.Build();
 				// https://docs.microsoft.com/en-us/graph/sdks/choose-authentication-providers?tabs=CS#authorization-code-provider
 				// https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow
-//TODO_FR 130 Brauche ich den AuthorizationCodeProvider? - in daemon demo ist er nicht notwendig
-//TODO_FR 140 scopes daemon demo "https://graph.microsoft.com/.default"
+				//TODO_FR 130 Brauche ich den AuthorizationCodeProvider? - in daemon demo ist er nicht notwendig
+				//TODO_FR 140 scopes daemon demo "https://graph.microsoft.com/.default"
+				// With client credentials flows the scopes is ALWAYS of the shape "resource/.default", as the 
+				// application permissions need to be set statically (in the portal or by PowerShell), and then granted by
+				// a tenant administrator. 
+				string[] scopes = new string[] { $"{OAuth_ApplicationPermissions.ApiUrl}.default" };
+
 				//AuthorizationCodeProvider authProvider = new AuthorizationCodeProvider(rConfidentialClientApplication, GetGraphScopes());
-//TODO_FR 140 application - AcquireTokenForClient(scopes)
-/*
-                result = await app.AcquireTokenForClient(scopes)
-                    .ExecuteAsync();
-*/
+				//TODO_FR 140 application - AcquireTokenForClient(scopes)
+				/*
+												result = await app.AcquireTokenForClient(scopes)
+														.ExecuteAsync();
+				*/
 				//await CreateClientAndCallGraph(authProvider);
-//TODO_FR 150 Api caller
-/*
-				GraphServiceClient graphClient = new GraphServiceClient(authProvider);
-				User user = await graphClient.Me
-											.Request()
-											.Select(u => new
-											{
-												u.DisplayName,
-												u.JobTitle
-											})
-											.GetAsync();
-				Debug.WriteLine("after calling");
-				m_rTextBoxResult.Text += System.String.Format("\nName: {0} JobTitle: {1}", user.DisplayName, user.JobTitle);
-*/
+				//TODO_FR 150 Api caller
+				/*
+								GraphServiceClient graphClient = new GraphServiceClient(authProvider);
+								User user = await graphClient.Me
+															.Request()
+															.Select(u => new
+															{
+																u.DisplayName,
+																u.JobTitle
+															})
+															.GetAsync();
+								Debug.WriteLine("after calling");
+								m_rTextBoxResult.Text += System.String.Format("\nName: {0} JobTitle: {1}", user.DisplayName, user.JobTitle);
+				*/
 			} catch (Microsoft.Graph.ServiceException rException) {
 				m_rTextBoxResult.Text += System.String.Format("\nException in m_rButton_OAuth20_Click:\n{0}", rException.Message);
 				if (rException.InnerException != null) {

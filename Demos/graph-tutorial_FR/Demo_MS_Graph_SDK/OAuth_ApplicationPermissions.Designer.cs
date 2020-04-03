@@ -61,6 +61,15 @@ namespace Demo_MS_Graph_SDK {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to https://graph.microsoft.com/.
+        /// </summary>
+        internal static string ApiUrl {
+            get {
+                return ResourceManager.GetString("ApiUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 85b6abe9-00b1-4cf9-8c66-2409c07568ae.
         /// </summary>
         internal static string AppId {
