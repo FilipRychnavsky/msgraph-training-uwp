@@ -98,9 +98,9 @@ namespace Demo_MS_Graph_SDK
 
 				//AuthorizationCodeProvider authProvider = new AuthorizationCodeProvider(rConfidentialClientApplication, GetGraphScopes());
 				//TODO_FR 140 application - AcquireTokenForClient(scopes)
-				AuthenticationResult result = null;
+				AuthenticationResult rAuthenticationResult = null;
 				try {
-					result = await rConfidentialClientApplication.AcquireTokenForClient(scopes)
+					rAuthenticationResult = await rConfidentialClientApplication.AcquireTokenForClient(scopes)
 							.ExecuteAsync();
 					m_rTextBoxResult.Text += "Token acquired" + System.Environment.NewLine;
 				} catch (MsalServiceException ex) when (ex.Message.Contains("AADSTS70011")) {
