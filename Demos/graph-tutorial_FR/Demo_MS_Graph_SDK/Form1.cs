@@ -13,6 +13,8 @@ using Microsoft.Identity.Client;
 using System.Resources;
 using System.Diagnostics;
 
+using System.Net.Http;
+
 namespace Demo_MS_Graph_SDK
 {
 	public partial class Form1 : Form
@@ -90,7 +92,6 @@ namespace Demo_MS_Graph_SDK
 				// https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow
 				// Demo für daemon in console un OAuth 2.0 https://github.com/Azure-Samples/active-directory-dotnetcore-daemon-v2/blob/master/1-Call-MSGraph/README.md
 
-				//TODO_FR 140 scopes daemon demo "https://graph.microsoft.com/.default"
 				// With client credentials flows the scopes is ALWAYS of the shape "resource/.default", as the 
 				// application permissions need to be set statically (in the portal or by PowerShell), and then granted by
 				// a tenant administrator. 
@@ -108,7 +109,7 @@ namespace Demo_MS_Graph_SDK
 					m_rTextBoxResult.Text += System.String.Format("Scope provided is not supported.\n");
 				}      
 				//await CreateClientAndCallGraph(authProvider);
-				//TODO_FR 150 Api caller; token verwenden ?
+				//TODO_FR 150 Demo verwendet Api caller; bisher haben wir authProvider verwendet; brauchen wir ihn noch?
 				/*
 								GraphServiceClient graphClient = new GraphServiceClient(authProvider);
 								User user = await graphClient.Me
@@ -122,6 +123,13 @@ namespace Demo_MS_Graph_SDK
 								Debug.WriteLine("after calling");
 								m_rTextBoxResult.Text += System.String.Format("\nName: {0} JobTitle: {1}", user.DisplayName, user.JobTitle);
 				*/
+            if (rAuthenticationResult != null)
+            {
+                var httpClient = new HttpClient();
+//TODO_FR 155 Api call - Muster in C:\code\active-directory-dotnetcore-daemon-v2\1-Call-MSGraph\daemon-console\ProtectedApiCallHelper.cs
+                var apiCaller = new ProtectedApiCallHelper(httpClient);
+                await apiCaller.CallWebApiAndProcessResultASync($"{OAuth_ApplicationPermissions.ApiUrl}v1.0/users", rAuthenticationResult.AccessToken, Display);
+            }
 			} catch (Microsoft.Graph.ServiceException rException) {
 				m_rTextBoxResult.Text += System.String.Format("\nException in m_rButton_OAuth20_Click:\n{0}", rException.Message);
 				if (rException.InnerException != null) {
