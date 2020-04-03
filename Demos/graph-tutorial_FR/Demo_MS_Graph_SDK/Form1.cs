@@ -97,7 +97,6 @@ namespace Demo_MS_Graph_SDK
 				string[] scopes = new string[] { $"{OAuth_ApplicationPermissions.ApiUrl}.default" };
 
 				//AuthorizationCodeProvider authProvider = new AuthorizationCodeProvider(rConfidentialClientApplication, GetGraphScopes());
-				//TODO_FR 140 application - AcquireTokenForClient(scopes)
 				AuthenticationResult rAuthenticationResult = null;
 				try {
 					rAuthenticationResult = await rConfidentialClientApplication.AcquireTokenForClient(scopes)
