@@ -78,8 +78,6 @@ namespace Demo_MS_Graph_SDK
 				var appId = OAuth_ApplicationPermissions.AppId;
 				// https://aad.portal.azure.com
 				string sClientSecret = OAuth_ApplicationPermissions.Secret;
-				//string sRedirectURI = "urn:ietf:wg:oauth:2.0:oob";
-//TODO_FR 120 Authority
 				string sInstanceOfAzure = "https://login.microsoftonline.com/{0}";
 				// AppId ist wie Tenant
 				string sAuthority = String.Format(System.Globalization.CultureInfo.InvariantCulture, sInstanceOfAzure, appId);
@@ -90,6 +88,7 @@ namespace Demo_MS_Graph_SDK
 										.Build();
 				// https://docs.microsoft.com/en-us/graph/sdks/choose-authentication-providers?tabs=CS#authorization-code-provider
 				// https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow
+				// Demo für daemon in console un OAuth 2.0 https://github.com/Azure-Samples/active-directory-dotnetcore-daemon-v2/blob/master/1-Call-MSGraph/README.md
 				//TODO_FR 130 Brauche ich den AuthorizationCodeProvider? - in daemon demo ist er nicht notwendig
 				//TODO_FR 140 scopes daemon demo "https://graph.microsoft.com/.default"
 				// With client credentials flows the scopes is ALWAYS of the shape "resource/.default", as the 
