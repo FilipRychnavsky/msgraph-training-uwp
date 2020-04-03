@@ -27,49 +27,53 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.m_rButtonConnect_InteractiveAuthenticationProvider = new System.Windows.Forms.Button();
 			this.m_rTextBoxResult = new System.Windows.Forms.TextBox();
 			this.m_rButton_OAuth20 = new System.Windows.Forms.Button();
+			this.m_rButtonConnect_InteractiveAuthenticationProvider = new System.Windows.Forms.Button();
 			this.SuspendLayout();
-			// 
-			// m_rButtonConnect_InteractiveAuthenticationProvider
-			// 
-			this.m_rButtonConnect_InteractiveAuthenticationProvider.BackColor = System.Drawing.Color.PaleGreen;
-			this.m_rButtonConnect_InteractiveAuthenticationProvider.Location = new System.Drawing.Point(30, 15);
-			this.m_rButtonConnect_InteractiveAuthenticationProvider.Name = "m_rButtonConnect_InteractiveAuthenticationProvider";
-			this.m_rButtonConnect_InteractiveAuthenticationProvider.Size = new System.Drawing.Size(199, 48);
-			this.m_rButtonConnect_InteractiveAuthenticationProvider.TabIndex = 0;
-			this.m_rButtonConnect_InteractiveAuthenticationProvider.Text = "Connect via InteractiveAuthenticationProvider";
-			this.m_rButtonConnect_InteractiveAuthenticationProvider.UseVisualStyleBackColor = false;
-			this.m_rButtonConnect_InteractiveAuthenticationProvider.Click += new System.EventHandler(this.m_rButtonConnect_InteractiveAuthenticationProvider_Click);
 			// 
 			// m_rTextBoxResult
 			// 
-			this.m_rTextBoxResult.Location = new System.Drawing.Point(464, 30);
+			this.m_rTextBoxResult.Location = new System.Drawing.Point(928, 58);
+			this.m_rTextBoxResult.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
 			this.m_rTextBoxResult.Multiline = true;
 			this.m_rTextBoxResult.Name = "m_rTextBoxResult";
-			this.m_rTextBoxResult.Size = new System.Drawing.Size(268, 265);
+			this.m_rTextBoxResult.Size = new System.Drawing.Size(532, 506);
 			this.m_rTextBoxResult.TabIndex = 1;
 			// 
 			// m_rButton_OAuth20
 			// 
 			this.m_rButton_OAuth20.BackColor = System.Drawing.Color.PaleGreen;
-			this.m_rButton_OAuth20.Location = new System.Drawing.Point(30, 69);
+			this.m_rButton_OAuth20.Location = new System.Drawing.Point(60, 133);
+			this.m_rButton_OAuth20.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
 			this.m_rButton_OAuth20.Name = "m_rButton_OAuth20";
-			this.m_rButton_OAuth20.Size = new System.Drawing.Size(199, 48);
-			this.m_rButton_OAuth20.TabIndex = 2;
+			this.m_rButton_OAuth20.Size = new System.Drawing.Size(398, 92);
+			this.m_rButton_OAuth20.TabIndex = 1;
 			this.m_rButton_OAuth20.Text = "Connect via OAuth 2.0 (Authorization code provider)";
 			this.m_rButton_OAuth20.UseVisualStyleBackColor = false;
 			this.m_rButton_OAuth20.Click += new System.EventHandler(this.m_rButton_OAuth20_Click);
 			// 
+			// m_rButtonConnect_InteractiveAuthenticationProvider
+			// 
+			this.m_rButtonConnect_InteractiveAuthenticationProvider.BackColor = System.Drawing.Color.PaleGreen;
+			this.m_rButtonConnect_InteractiveAuthenticationProvider.Location = new System.Drawing.Point(60, 29);
+			this.m_rButtonConnect_InteractiveAuthenticationProvider.Margin = new System.Windows.Forms.Padding(6);
+			this.m_rButtonConnect_InteractiveAuthenticationProvider.Name = "m_rButtonConnect_InteractiveAuthenticationProvider";
+			this.m_rButtonConnect_InteractiveAuthenticationProvider.Size = new System.Drawing.Size(398, 92);
+			this.m_rButtonConnect_InteractiveAuthenticationProvider.TabIndex = 0;
+			this.m_rButtonConnect_InteractiveAuthenticationProvider.Text = "Connect via InteractiveAuthenticationProvider";
+			this.m_rButtonConnect_InteractiveAuthenticationProvider.UseVisualStyleBackColor = false;
+			this.m_rButtonConnect_InteractiveAuthenticationProvider.Click += new System.EventHandler(this.m_rButtonConnect_InteractiveAuthenticationProvider_Click);
+			// 
 			// Form1
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(800, 450);
+			this.ClientSize = new System.Drawing.Size(1600, 865);
 			this.Controls.Add(this.m_rButton_OAuth20);
 			this.Controls.Add(this.m_rTextBoxResult);
 			this.Controls.Add(this.m_rButtonConnect_InteractiveAuthenticationProvider);
+			this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
 			this.Name = "Form1";
 			this.Text = "Form1";
 			this.ResumeLayout(false);
@@ -78,10 +82,9 @@
 		}
 
 		#endregion
-
-		private System.Windows.Forms.Button m_rButtonConnect_InteractiveAuthenticationProvider;
 		private System.Windows.Forms.TextBox m_rTextBoxResult;
 		private System.Windows.Forms.Button m_rButton_OAuth20;
+		private System.Windows.Forms.Button m_rButtonConnect_InteractiveAuthenticationProvider;
 	}
 }
 
