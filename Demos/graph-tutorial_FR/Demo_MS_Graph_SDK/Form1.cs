@@ -76,7 +76,6 @@ namespace Demo_MS_Graph_SDK
 			try {
 				// Build a client application.
 				var appId = OAuth_ApplicationPermissions.AppId;
-				//TODO_FR 150 secret für OAuth20 Für Anton05 seinen Display Name holen
 				// https://aad.portal.azure.com
 				string sClientSecret = OAuth_ApplicationPermissions.Secret;
 				string sRedirectURI = "urn:ietf:wg:oauth:2.0:oob";
@@ -93,6 +92,7 @@ namespace Demo_MS_Graph_SDK
 			} catch (Microsoft.Graph.ServiceException rException) {
 				m_rTextBoxResult.Text += System.String.Format("\nException in m_rButton_OAuth20_Click:\n{0}", rException.Message);
 				if (rException.InnerException != null) {
+				//TODO_FR 150 ApplicationPermission HACK
 					m_rTextBoxResult.Text += System.String.Format("\nInner Exception:\n{0}", rException.InnerException.Message);
 				}
 			}
