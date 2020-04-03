@@ -73,6 +73,7 @@ namespace Demo_MS_Graph_SDK
 
 		private async void m_rButton_OAuth20_Click(object sender, EventArgs e)
 		{
+			m_rTextBoxResult.Text += System.String.Format("\nm_rButton_OAuth20_Click Start\n");
 			try {
 				// Build a client application.
 				var appId = OAuth_ApplicationPermissions.AppId;
@@ -101,15 +102,11 @@ namespace Demo_MS_Graph_SDK
 				try {
 					result = await rConfidentialClientApplication.AcquireTokenForClient(scopes)
 							.ExecuteAsync();
-					Console.ForegroundColor = ConsoleColor.Green;
-					Console.WriteLine("Token acquired");
-					Console.ResetColor();
+					m_rTextBoxResult.Text += System.String.Format("Token acquired\n");
 				} catch (MsalServiceException ex) when (ex.Message.Contains("AADSTS70011")) {
 					// Invalid scope. The scope has to be of the form "https://resourceurl/.default"
 					// Mitigation: change the scope to be as expected
-					Console.ForegroundColor = ConsoleColor.Red;
-					Console.WriteLine("Scope provided is not supported");
-					Console.ResetColor();
+					m_rTextBoxResult.Text += System.String.Format("Scope provided is not supported.\n");
 				}      
 				//await CreateClientAndCallGraph(authProvider);
 				//TODO_FR 150 Api caller; token verwenden ?
