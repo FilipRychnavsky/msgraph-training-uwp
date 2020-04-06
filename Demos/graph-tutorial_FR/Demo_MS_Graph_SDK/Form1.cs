@@ -127,9 +127,8 @@ namespace Demo_MS_Graph_SDK
 					HttpResponseMessage rHttpResponseMessage = await rHttpClient.GetAsync(sWebApiUrl);
 					if (rHttpResponseMessage.IsSuccessStatusCode) {
 						string sJsonResponse = await rHttpResponseMessage.Content.ReadAsStringAsync();
-						//TODO_FR 170 Interpretierung der Response , json; gibt es vielleicht XML Antworten
-						JObject result = JsonConvert.DeserializeObject(sJsonResponse) as JObject;
-						foreach (JProperty child in result.Properties().Where(p => !p.Name.StartsWith("@"))) {
+						JObject rJObectResponse = JsonConvert.DeserializeObject(sJsonResponse) as JObject;
+						foreach (JProperty child in rJObectResponse.Properties().Where(p => !p.Name.StartsWith("@"))) {
 							m_rTextBoxResult.Text += System.Environment.NewLine + $"{child.Name} = {child.Value}";
 						}
 						//TODO_FR 230 Downstream (oder bekommen wir einen Link auf neu angelegte Datei zurück)
