@@ -119,24 +119,23 @@ namespace Demo_MS_Graph_SDK
 					string sWebApiUrl = $"{OAuth_ApplicationPermissions.ApiUrl}v1.0/users";
 					//TODO_FR 220 UpStreamen in Office
 					var defaultRequestHeaders = rHttpClient.DefaultRequestHeaders;
-					//TODO_FR 160 Brauchen wir json, oder quality header values?
+					// Test: wenn ich kein QualityHeaderValue hinzugefügt habe, habe ich trotzdem gleiches Ergebnis bekommen.
 					if (defaultRequestHeaders.Accept == null || !defaultRequestHeaders.Accept.Any(m => m.MediaType == "application/json")) {
 						rHttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 					}
 					defaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", rAuthenticationResult.AccessToken);
-					// await apiCaller.CallWebApiAndProcessResultASync($"{OAuth_ApplicationPermissions.ApiUrl}v1.0/users", rAuthenticationResult.AccessToken, Display);
-					HttpResponseMessage response = await rHttpClient.GetAsync(sWebApiUrl);
-					if (response.IsSuccessStatusCode) {
-						string json = await response.Content.ReadAsStringAsync();
+					HttpResponseMessage rHttpResponseMessage = await rHttpClient.GetAsync(sWebApiUrl);
+					if (rHttpResponseMessage.IsSuccessStatusCode) {
+						string sJsonResponse = await rHttpResponseMessage.Content.ReadAsStringAsync();
 						//TODO_FR 170 Interpretierung der Response , json; gibt es vielleicht XML Antworten
-						JObject result = JsonConvert.DeserializeObject(json) as JObject;
+						JObject result = JsonConvert.DeserializeObject(sJsonResponse) as JObject;
 						foreach (JProperty child in result.Properties().Where(p => !p.Name.StartsWith("@"))) {
 							m_rTextBoxResult.Text += System.Environment.NewLine + $"{child.Name} = {child.Value}";
 						}
 						//TODO_FR 230 Downstream (oder bekommen wir einen Link auf neu angelegte Datei zurück)
 					} else {
-						m_rTextBoxResult.Text += System.Environment.NewLine + $"Failed to call the Web Api: {response.StatusCode}";
-						string content = await response.Content.ReadAsStringAsync();
+						m_rTextBoxResult.Text += System.Environment.NewLine + $"Failed to call the Web Api: {rHttpResponseMessage.StatusCode}";
+						string content = await rHttpResponseMessage.Content.ReadAsStringAsync();
 						// Note that if you got reponse.Code == 403 and reponse.content.code == "Authorization_RequestDenied"
 						// this is because the tenant admin as not granted consent for the application to call the Web API
 						m_rTextBoxResult.Text += System.Environment.NewLine + $"Content: {content}";
