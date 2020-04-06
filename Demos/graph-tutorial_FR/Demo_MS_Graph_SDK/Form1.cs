@@ -114,6 +114,75 @@ namespace Demo_MS_Graph_SDK
 				}
 				if (rAuthenticationResult != null) {
 					var rHttpClient = new HttpClient();
+					string sWebApiUrl = $"{OAuth_ApplicationPermissions.ApiUrl}v1.0/users";
+					var defaultRequestHeaders = rHttpClient.DefaultRequestHeaders;
+					// Test: wenn ich kein QualityHeaderValue hinzugefügt habe, habe ich trotzdem gleiches Ergebnis bekommen.
+					if (defaultRequestHeaders.Accept == null || !defaultRequestHeaders.Accept.Any(m => m.MediaType == "application/json")) {
+						rHttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+					}
+					defaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", rAuthenticationResult.AccessToken);
+					HttpResponseMessage rHttpResponseMessage = await rHttpClient.GetAsync(sWebApiUrl);
+					if (rHttpResponseMessage.IsSuccessStatusCode) {
+						string sResponseAsString = await rHttpResponseMessage.Content.ReadAsStringAsync();
+						JObject rJObectResponse = JsonConvert.DeserializeObject(sResponseAsString) as JObject;
+						foreach (JProperty child in rJObectResponse.Properties().Where(p => !p.Name.StartsWith("@"))) {
+							m_rTextBoxResult.Text += System.Environment.NewLine + $"{child.Name} = {child.Value}";
+						}
+					} else {
+						m_rTextBoxResult.Text += System.Environment.NewLine + $"Failed to call the Web Api: {rHttpResponseMessage.StatusCode}";
+						string content = await rHttpResponseMessage.Content.ReadAsStringAsync();
+						// Note that if you got reponse.Code == 403 and reponse.content.code == "Authorization_RequestDenied"
+						// this is because the tenant admin as not granted consent for the application to call the Web API
+						m_rTextBoxResult.Text += System.Environment.NewLine + $"Content: {content}";
+					}
+				}
+			} catch (Microsoft.Graph.ServiceException rException) {
+				m_rTextBoxResult.Text += System.String.Format("\nException in m_rButton_OAuth20_Click:\n{0}", rException.Message);
+				if (rException.InnerException != null) {
+					m_rTextBoxResult.Text += System.String.Format("\nInner Exception:\n{0}", rException.InnerException.Message);
+				}
+			} catch (System.Exception rException) {
+				m_rTextBoxResult.Text += System.String.Format("\nException in m_rButton_OAuth20_Click:\n{0}", rException.Message);
+			}
+		}
+
+		private async void m_rButtonExcel_Click(object sender, EventArgs e)
+		{
+			m_rTextBoxResult.Text += System.Environment.NewLine + "m_rButtonExcel_Click Start" + System.Environment.NewLine;
+			try {
+				// Build a client application.
+				var appId = OAuth_ApplicationPermissions.AppId;
+				// https://aad.portal.azure.com
+				string sClientSecret = OAuth_ApplicationPermissions.Secret;
+				string sInstanceOfAzure = "https://login.microsoftonline.com/{0}";
+				string sAuthority = String.Format(System.Globalization.CultureInfo.InvariantCulture, sInstanceOfAzure, OAuth_ApplicationPermissions.Tenant);
+				IConfidentialClientApplication rConfidentialClientApplication = ConfidentialClientApplicationBuilder
+										.Create(appId)
+										.WithClientSecret(sClientSecret)
+										.WithAuthority(new Uri(sAuthority))
+										.Build();
+				// https://docs.microsoft.com/en-us/graph/sdks/choose-authentication-providers?tabs=CS#authorization-code-provider
+				// https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow
+				// Demo für daemon in console un OAuth 2.0 https://github.com/Azure-Samples/active-directory-dotnetcore-daemon-v2/blob/master/1-Call-MSGraph/README.md
+
+				// With client credentials flows the scopes is ALWAYS of the shape "resource/.default", as the 
+				// application permissions need to be set statically (in the portal or by PowerShell), and then granted by
+				// a tenant administrator. 
+				string[] scopes = new string[] { $"{OAuth_ApplicationPermissions.ApiUrl}.default" };
+
+				//AuthorizationCodeProvider authProvider = new AuthorizationCodeProvider(rConfidentialClientApplication, GetGraphScopes());
+				AuthenticationResult rAuthenticationResult = null;
+				try {
+					rAuthenticationResult = await rConfidentialClientApplication.AcquireTokenForClient(scopes)
+							.ExecuteAsync();
+					m_rTextBoxResult.Text += "Token acquired" + System.Environment.NewLine;
+				} catch (MsalServiceException ex) when (ex.Message.Contains("AADSTS70011")) {
+					// Invalid scope. The scope has to be of the form "https://resourceurl/.default"
+					// Mitigation: change the scope to be as expected
+					m_rTextBoxResult.Text += System.String.Format("Scope provided is not supported.\n");
+				}
+				if (rAuthenticationResult != null) {
+					var rHttpClient = new HttpClient();
 					//TODO_FR 299 Neuanlage eine Datei in Office 365
 					//TODO_FR 210 WebApiUrl für Neuanlage eines Excel Sheet; Kann man sich in Graph oder Postman inspirieren?
 					string sWebApiUrl = $"{OAuth_ApplicationPermissions.ApiUrl}v1.0/users";
