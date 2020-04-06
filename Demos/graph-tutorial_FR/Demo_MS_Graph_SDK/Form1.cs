@@ -75,7 +75,7 @@ namespace Demo_MS_Graph_SDK
 
 		private async void m_rButton_OAuth20_Click(object sender, EventArgs e)
 		{
-			m_rTextBoxResult.Text +=  System.Environment.NewLine + "m_rButton_OAuth20_Click Start" + System.Environment.NewLine;
+			m_rTextBoxResult.Text += System.Environment.NewLine + "m_rButton_OAuth20_Click Start" + System.Environment.NewLine;
 			try {
 				// Build a client application.
 				var appId = OAuth_ApplicationPermissions.AppId;
@@ -107,7 +107,7 @@ namespace Demo_MS_Graph_SDK
 					// Invalid scope. The scope has to be of the form "https://resourceurl/.default"
 					// Mitigation: change the scope to be as expected
 					m_rTextBoxResult.Text += System.String.Format("Scope provided is not supported.\n");
-				}      
+				}
 				//await CreateClientAndCallGraph(authProvider);
 				//TODO_FR 150 Demo verwendet Api caller; bisher haben wir authProvider verwendet; brauchen wir ihn noch?
 				/*
@@ -123,17 +123,21 @@ namespace Demo_MS_Graph_SDK
 								Debug.WriteLine("after calling");
 								m_rTextBoxResult.Text += System.String.Format("\nName: {0} JobTitle: {1}", user.DisplayName, user.JobTitle);
 				*/
-            if (rAuthenticationResult != null)
-            {
-                var httpClient = new HttpClient();
-//TODO_FR 155 Api call - Muster in C:\code\active-directory-dotnetcore-daemon-v2\1-Call-MSGraph\daemon-console\ProtectedApiCallHelper.cs
-                var apiCaller = new ProtectedApiCallHelper(httpClient);
-                await apiCaller.CallWebApiAndProcessResultASync($"{OAuth_ApplicationPermissions.ApiUrl}v1.0/users", rAuthenticationResult.AccessToken, Display);
-            }
+				if (rAuthenticationResult != null) {
+					var httpClient = new HttpClient();
+					//TODO_FR 155 Api call - Muster in C:\code\active-directory-dotnetcore-daemon-v2\1-Call-MSGraph\daemon-console\ProtectedApiCallHelper.cs
+					//var apiCaller = new ProtectedApiCallHelper(httpClient);
+					// await apiCaller.CallWebApiAndProcessResultASync($"{OAuth_ApplicationPermissions.ApiUrl}v1.0/users", rAuthenticationResult.AccessToken, Display);
+					//string sWebApiUrl = $"{OAuth_ApplicationPermissions}v1.0/users"
+
+
+					rAuthenticationResult.AccessToken
+
+						}
 			} catch (Microsoft.Graph.ServiceException rException) {
 				m_rTextBoxResult.Text += System.String.Format("\nException in m_rButton_OAuth20_Click:\n{0}", rException.Message);
 				if (rException.InnerException != null) {
-				//TODO_FR 550 ApplicationPermission HACK
+					//TODO_FR 550 ApplicationPermission HACK
 					m_rTextBoxResult.Text += System.String.Format("\nInner Exception:\n{0}", rException.InnerException.Message);
 				}
 			} catch (System.Exception rException) {
