@@ -118,12 +118,12 @@ namespace Demo_MS_Graph_SDK
 					//TODO_FR 210 WebApiUrl für Neuanlage eines Excel Sheet; Kann man sich in Graph oder Postman inspirieren?
 					string sWebApiUrl = $"{OAuth_ApplicationPermissions.ApiUrl}v1.0/users";
 					//TODO_FR 220 UpStreamen in Office
-					var defaultRequetHeaders = rHttpClient.DefaultRequestHeaders;
-					if (defaultRequetHeaders.Accept == null || !defaultRequetHeaders.Accept.Any(m => m.MediaType == "application/json")) {
-						//TODO_FR 160 Brauchen wir json, oder quality header values?
+					var defaultRequestHeaders = rHttpClient.DefaultRequestHeaders;
+					//TODO_FR 160 Brauchen wir json, oder quality header values?
+					if (defaultRequestHeaders.Accept == null || !defaultRequestHeaders.Accept.Any(m => m.MediaType == "application/json")) {
 						rHttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 					}
-					defaultRequetHeaders.Authorization = new AuthenticationHeaderValue("bearer", rAuthenticationResult.AccessToken);
+					defaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", rAuthenticationResult.AccessToken);
 					// await apiCaller.CallWebApiAndProcessResultASync($"{OAuth_ApplicationPermissions.ApiUrl}v1.0/users", rAuthenticationResult.AccessToken, Display);
 					HttpResponseMessage response = await rHttpClient.GetAsync(sWebApiUrl);
 					if (response.IsSuccessStatusCode) {
