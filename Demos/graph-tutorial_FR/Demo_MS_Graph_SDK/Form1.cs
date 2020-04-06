@@ -126,8 +126,8 @@ namespace Demo_MS_Graph_SDK
 					defaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", rAuthenticationResult.AccessToken);
 					HttpResponseMessage rHttpResponseMessage = await rHttpClient.GetAsync(sWebApiUrl);
 					if (rHttpResponseMessage.IsSuccessStatusCode) {
-						string sJsonResponse = await rHttpResponseMessage.Content.ReadAsStringAsync();
-						JObject rJObectResponse = JsonConvert.DeserializeObject(sJsonResponse) as JObject;
+						string sResponseAsString = await rHttpResponseMessage.Content.ReadAsStringAsync();
+						JObject rJObectResponse = JsonConvert.DeserializeObject(sResponseAsString) as JObject;
 						foreach (JProperty child in rJObectResponse.Properties().Where(p => !p.Name.StartsWith("@"))) {
 							m_rTextBoxResult.Text += System.Environment.NewLine + $"{child.Name} = {child.Value}";
 						}
