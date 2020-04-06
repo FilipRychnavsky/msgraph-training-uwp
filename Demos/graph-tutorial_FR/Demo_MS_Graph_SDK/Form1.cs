@@ -13,7 +13,11 @@ using Microsoft.Identity.Client;
 using System.Resources;
 using System.Diagnostics;
 
+//FR Namespaces für die Anbindung an Office 365
 using System.Net.Http;
+using System.Net.Http.Headers;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Demo_MS_Graph_SDK
 {
@@ -108,36 +112,39 @@ namespace Demo_MS_Graph_SDK
 					// Mitigation: change the scope to be as expected
 					m_rTextBoxResult.Text += System.String.Format("Scope provided is not supported.\n");
 				}
-				//await CreateClientAndCallGraph(authProvider);
-				//TODO_FR 150 Demo verwendet Api caller; bisher haben wir authProvider verwendet; brauchen wir ihn noch?
-				/*
-								GraphServiceClient graphClient = new GraphServiceClient(authProvider);
-								User user = await graphClient.Me
-															.Request()
-															.Select(u => new
-															{
-																u.DisplayName,
-																u.JobTitle
-															})
-															.GetAsync();
-								Debug.WriteLine("after calling");
-								m_rTextBoxResult.Text += System.String.Format("\nName: {0} JobTitle: {1}", user.DisplayName, user.JobTitle);
-				*/
 				if (rAuthenticationResult != null) {
-					var httpClient = new HttpClient();
-					//TODO_FR 155 Api call - Muster in C:\code\active-directory-dotnetcore-daemon-v2\1-Call-MSGraph\daemon-console\ProtectedApiCallHelper.cs
-					//var apiCaller = new ProtectedApiCallHelper(httpClient);
+					var rHttpClient = new HttpClient();
+					//TODO_FR 299 Neuanlage eine Datei in Office 365
+					//TODO_FR 210 WebApiUrl für Neuanlage eines Excel Sheet; Kann man sich in Graph oder Postman inspirieren?
+					string sWebApiUrl = $"{OAuth_ApplicationPermissions.ApiUrl}v1.0/users";
+					//TODO_FR 220 UpStreamen in Office
+					var defaultRequetHeaders = rHttpClient.DefaultRequestHeaders;
+					if (defaultRequetHeaders.Accept == null || !defaultRequetHeaders.Accept.Any(m => m.MediaType == "application/json")) {
+						//TODO_FR 160 Brauchen wir json, oder quality header values?
+						rHttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+					}
+					defaultRequetHeaders.Authorization = new AuthenticationHeaderValue("bearer", rAuthenticationResult.AccessToken);
 					// await apiCaller.CallWebApiAndProcessResultASync($"{OAuth_ApplicationPermissions.ApiUrl}v1.0/users", rAuthenticationResult.AccessToken, Display);
-					//string sWebApiUrl = $"{OAuth_ApplicationPermissions}v1.0/users"
-
-
-					rAuthenticationResult.AccessToken
-
+					HttpResponseMessage response = await rHttpClient.GetAsync(sWebApiUrl);
+					if (response.IsSuccessStatusCode) {
+						string json = await response.Content.ReadAsStringAsync();
+						//TODO_FR 170 Interpretierung der Response , json; gibt es vielleicht XML Antworten
+						JObject result = JsonConvert.DeserializeObject(json) as JObject;
+						foreach (JProperty child in result.Properties().Where(p => !p.Name.StartsWith("@"))) {
+							m_rTextBoxResult.Text += System.Environment.NewLine + $"{child.Name} = {child.Value}";
 						}
+						//TODO_FR 230 Downstream (oder bekommen wir einen Link auf neu angelegte Datei zurück)
+					} else {
+						m_rTextBoxResult.Text += System.Environment.NewLine + $"Failed to call the Web Api: {response.StatusCode}";
+						string content = await response.Content.ReadAsStringAsync();
+						// Note that if you got reponse.Code == 403 and reponse.content.code == "Authorization_RequestDenied"
+						// this is because the tenant admin as not granted consent for the application to call the Web API
+						m_rTextBoxResult.Text += System.Environment.NewLine + $"Content: {content}";
+					}
+				}
 			} catch (Microsoft.Graph.ServiceException rException) {
 				m_rTextBoxResult.Text += System.String.Format("\nException in m_rButton_OAuth20_Click:\n{0}", rException.Message);
 				if (rException.InnerException != null) {
-					//TODO_FR 550 ApplicationPermission HACK
 					m_rTextBoxResult.Text += System.String.Format("\nInner Exception:\n{0}", rException.InnerException.Message);
 				}
 			} catch (System.Exception rException) {
