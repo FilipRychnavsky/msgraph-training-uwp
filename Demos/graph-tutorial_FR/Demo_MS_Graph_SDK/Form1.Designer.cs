@@ -34,18 +34,22 @@
 			// 
 			// m_rTextBoxResult
 			// 
-			this.m_rTextBoxResult.Location = new System.Drawing.Point(928, 58);
-			this.m_rTextBoxResult.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this.m_rTextBoxResult.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.m_rTextBoxResult.Location = new System.Drawing.Point(1053, 15);
+			this.m_rTextBoxResult.Margin = new System.Windows.Forms.Padding(6);
 			this.m_rTextBoxResult.Multiline = true;
 			this.m_rTextBoxResult.Name = "m_rTextBoxResult";
-			this.m_rTextBoxResult.Size = new System.Drawing.Size(532, 506);
+			this.m_rTextBoxResult.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+			this.m_rTextBoxResult.Size = new System.Drawing.Size(532, 818);
 			this.m_rTextBoxResult.TabIndex = 1;
 			// 
 			// m_rButton_OAuth20
 			// 
 			this.m_rButton_OAuth20.BackColor = System.Drawing.Color.PaleGreen;
 			this.m_rButton_OAuth20.Location = new System.Drawing.Point(60, 133);
-			this.m_rButton_OAuth20.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this.m_rButton_OAuth20.Margin = new System.Windows.Forms.Padding(6);
 			this.m_rButton_OAuth20.Name = "m_rButton_OAuth20";
 			this.m_rButton_OAuth20.Size = new System.Drawing.Size(398, 92);
 			this.m_rButton_OAuth20.TabIndex = 1;
@@ -73,7 +77,7 @@
 			this.Controls.Add(this.m_rButton_OAuth20);
 			this.Controls.Add(this.m_rTextBoxResult);
 			this.Controls.Add(this.m_rButtonConnect_InteractiveAuthenticationProvider);
-			this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+			this.Margin = new System.Windows.Forms.Padding(6);
 			this.Name = "Form1";
 			this.Text = "Form1";
 			this.ResumeLayout(false);
