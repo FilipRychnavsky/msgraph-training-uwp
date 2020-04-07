@@ -173,6 +173,15 @@ namespace Demo_MS_Graph_SDK
 				//TODO_FR 190 experiment AuthorizationCodeProvider
 				// https://docs.microsoft.com/en-us/graph/sdks/create-requests?tabs=CS
 				AuthorizationCodeProvider authProvider = new AuthorizationCodeProvider(rConfidentialClientApplication);
+				GraphServiceClient graphClient = new GraphServiceClient( authProvider );
+				var calendar = new Calendar
+				{
+					Name = "Volunteer"
+				};
+
+				var newCalendar = await graphClient.Me.Calendars
+					.Request()
+					.AddAsync(calendar);
 
 				AuthenticationResult rAuthenticationResult = null;
 				try {
