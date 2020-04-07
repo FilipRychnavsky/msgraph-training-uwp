@@ -170,19 +170,6 @@ namespace Demo_MS_Graph_SDK
 				// a tenant administrator. 
 				string[] scopes = new string[] { $"{OAuth_ApplicationPermissions.ApiUrl}.default" };
 
-				//TODO_FR 190 experiment AuthorizationCodeProvider
-				// https://docs.microsoft.com/en-us/graph/sdks/create-requests?tabs=CS
-				AuthorizationCodeProvider authProvider = new AuthorizationCodeProvider(rConfidentialClientApplication);
-				GraphServiceClient graphClient = new GraphServiceClient( authProvider );
-				var calendar = new Calendar
-				{
-					Name = "Volunteer"
-				};
-
-				var newCalendar = await graphClient.Me.Calendars
-					.Request()
-					.AddAsync(calendar);
-
 				AuthenticationResult rAuthenticationResult = null;
 				try {
 					rAuthenticationResult = await rConfidentialClientApplication.AcquireTokenForClient(scopes)
