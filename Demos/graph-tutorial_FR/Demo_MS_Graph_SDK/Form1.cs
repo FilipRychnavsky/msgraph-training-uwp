@@ -170,7 +170,19 @@ namespace Demo_MS_Graph_SDK
 				// a tenant administrator. 
 				string[] scopes = new string[] { $"{OAuth_ApplicationPermissions.ApiUrl}.default" };
 
-				//AuthorizationCodeProvider authProvider = new AuthorizationCodeProvider(rConfidentialClientApplication, GetGraphScopes());
+				//TODO_FR 190 experiment AuthorizationCodeProvider
+				// https://docs.microsoft.com/en-us/graph/sdks/create-requests?tabs=CS
+				AuthorizationCodeProvider authProvider = new AuthorizationCodeProvider(rConfidentialClientApplication);
+// GET https://graph.microsoft.com/v1.0/me
+
+/*
+     User user = await rConfidentialClientApplication.Me  
+                .Request()
+                .GetAsync();
+     User user = await authProvider.Me  
+                .Request()
+                .GetAsync();
+*/
 				AuthenticationResult rAuthenticationResult = null;
 				try {
 					rAuthenticationResult = await rConfidentialClientApplication.AcquireTokenForClient(scopes)
@@ -187,12 +199,11 @@ namespace Demo_MS_Graph_SDK
 					//TODO_FR 210 WebApiUrl für Neuanlage eines Excel Sheet; Kann man sich in Graph oder Postman inspirieren?
 					string sWebApiUrl = $"{OAuth_ApplicationPermissions.ApiUrl}v1.0/users";
 					//TODO_FR 220 UpStreamen in Office
-					var defaultRequestHeaders = rHttpClient.DefaultRequestHeaders;
 					// Test: wenn ich kein QualityHeaderValue hinzugefügt habe, habe ich trotzdem gleiches Ergebnis bekommen.
-					if (defaultRequestHeaders.Accept == null || !defaultRequestHeaders.Accept.Any(m => m.MediaType == "application/json")) {
+					if (rHttpClient.DefaultRequestHeaders.Accept == null || !rHttpClient.DefaultRequestHeaders.Accept.Any(m => m.MediaType == "application/json")) {
 						rHttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 					}
-					defaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", rAuthenticationResult.AccessToken);
+					rHttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", rAuthenticationResult.AccessToken);
 					HttpResponseMessage rHttpResponseMessage = await rHttpClient.GetAsync(sWebApiUrl);
 					if (rHttpResponseMessage.IsSuccessStatusCode) {
 						string sResponseAsString = await rHttpResponseMessage.Content.ReadAsStringAsync();
