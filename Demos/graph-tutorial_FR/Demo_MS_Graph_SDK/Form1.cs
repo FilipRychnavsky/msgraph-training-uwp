@@ -173,16 +173,7 @@ namespace Demo_MS_Graph_SDK
 				//TODO_FR 190 experiment AuthorizationCodeProvider
 				// https://docs.microsoft.com/en-us/graph/sdks/create-requests?tabs=CS
 				AuthorizationCodeProvider authProvider = new AuthorizationCodeProvider(rConfidentialClientApplication);
-// GET https://graph.microsoft.com/v1.0/me
 
-/*
-     User user = await rConfidentialClientApplication.Me  
-                .Request()
-                .GetAsync();
-     User user = await authProvider.Me  
-                .Request()
-                .GetAsync();
-*/
 				AuthenticationResult rAuthenticationResult = null;
 				try {
 					rAuthenticationResult = await rConfidentialClientApplication.AcquireTokenForClient(scopes)
