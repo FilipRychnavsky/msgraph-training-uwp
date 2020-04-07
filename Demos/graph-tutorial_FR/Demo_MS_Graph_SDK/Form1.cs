@@ -184,8 +184,9 @@ namespace Demo_MS_Graph_SDK
 					var rHttpClient = new HttpClient();
 					//TODO_FR 299 Neuanlage eine Datei in Office 365
 					//TODO_FR 210 WebApiUrl für Neuanlage eines Excel Sheet; Kann man sich in Graph oder Postman inspirieren?
-					string sWebApiUrl = $"{OAuth_ApplicationPermissions.ApiUrl}v1.0/users";
+					//string sWebApiUrl = $"{OAuth_ApplicationPermissions.ApiUrl}v1.0/users";
 					//string sWebApiUrl = $"{OAuth_ApplicationPermissions.ApiUrl}v1.0/me";
+					string sWebApiUrl = $"{OAuth_ApplicationPermissions.ApiUrl}/v1.0/me/drives";
 					//TODO_FR 220 UpStreamen in Office
 					// Test: wenn ich kein QualityHeaderValue hinzugefügt habe, habe ich trotzdem gleiches Ergebnis bekommen.
 					if (rHttpClient.DefaultRequestHeaders.Accept == null || !rHttpClient.DefaultRequestHeaders.Accept.Any(m => m.MediaType == "application/json")) {
