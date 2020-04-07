@@ -44,7 +44,7 @@
 			this.m_rTextBoxResult.Name = "m_rTextBoxResult";
 			this.m_rTextBoxResult.ScrollBars = System.Windows.Forms.ScrollBars.Both;
 			this.m_rTextBoxResult.Size = new System.Drawing.Size(532, 818);
-			this.m_rTextBoxResult.TabIndex = 1;
+			this.m_rTextBoxResult.TabIndex = 3;
 			// 
 			// m_rButton_OAuth20
 			// 
