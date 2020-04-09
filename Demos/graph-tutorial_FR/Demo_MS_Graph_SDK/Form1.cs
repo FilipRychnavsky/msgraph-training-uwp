@@ -152,6 +152,7 @@ namespace Demo_MS_Graph_SDK
 			m_rTextBoxResult.Text += System.Environment.NewLine + "m_rButtonExcel_Click Start" + System.Environment.NewLine;
 			//TODO_FR 299 Neuanlage eine Datei in Office 365; 
 			//TODO_FR 280 rename Variables
+			//TODO_FR 650 Den Code auch in einer VM in der cloud testen (wegen Packages; was Borja noch installieren muss)
 
 			try {
 				const string userPrincipalName = "Babsi05@CVSDemo05.onmicrosoft.com";
@@ -167,10 +168,13 @@ namespace Demo_MS_Graph_SDK
                                                     .WithRedirectUri(sRedirectUri)
                                                     .WithClientSecret(sClientSecret)
                                                     .Build();
-				//TODO_FR 190 rAuthenticationProvider; Muster D25 CreateAuthorizationProvider
-				IAuthenticationProvider rAuthenticationProvider = null;
-				//TODO_FR 210 GraphServiceClient - Muster in D25 GetAuthenticatedGraphClient
-				GraphServiceClient rGraphServiceClient = new GraphServiceClient(rAuthenticationProvider);
+				// With client credentials flows the scopes is ALWAYS of the shape "resource/.default", as the 
+				// application permissions need to be set statically (in the portal or by PowerShell), and then granted by
+				// a tenant administrator. 
+				string[] scopes = new string[] { $"{OAuth_ApplicationPermissions.ApiUrl}.default" };
+				// ConsoleGraphTest.MsalAuthenticationProvider wurde von https://developer.microsoft.com/en-us/graph/blogs/30daysmsgraph-day-15-microsoft-graph-in-dotnet-core-application/
+				IAuthenticationProvider rAuthenticationProvider = new ConsoleGraphTest.MsalAuthenticationProvider(rConfidentialClientApplicationBuilder, scopes.ToArray());
+				GraphServiceClient rGraphServiceClient = new  GraphServiceClient(rAuthenticationProvider, );
 				/*
 								// Build a client application.
 								var appId = OAuth_ApplicationPermissions.AppId;
