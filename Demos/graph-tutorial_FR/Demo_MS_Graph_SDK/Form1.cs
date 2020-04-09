@@ -18,6 +18,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.IO;
 
 namespace Demo_MS_Graph_SDK
 {
@@ -172,9 +173,46 @@ namespace Demo_MS_Graph_SDK
 				string[] scopes = new string[] { $"{OAuth_ApplicationPermissions.ApiUrl}.default" };
 				// ConsoleGraphTest.MsalAuthenticationProvider wurde von https://developer.microsoft.com/en-us/graph/blogs/30daysmsgraph-day-15-microsoft-graph-in-dotnet-core-application/
 				IAuthenticationProvider rAuthenticationProvider = new ConsoleGraphTest.MsalAuthenticationProvider(rConfidentialClientApplicationBuilder, scopes.ToArray());
-				GraphServiceClient rGraphServiceClient = new  GraphServiceClient(rAuthenticationProvider, );
-				const string userPrincipalName = "Babsi05@CVSDemo05.onmicrosoft.com";
+				GraphServiceClient rGraphServiceClient = new  GraphServiceClient(rAuthenticationProvider);
+			//TODO_FR 240 Kann ich einen Benutzer "vorauswählen"
+				const string sUserPrincipalName = "Babsi05@CVSDemo05.onmicrosoft.com";
 				//TODO_FR 250 Beispiel Day29 OneDriveHelperCall
+				const string smallFilePath = @"SampleFiles\SmallFile.txt";
+				const string largeFilePath = @"SampleFiles\LargeFile.txt";
+				DriveItem uploadedFile = null;
+				FileStream fileStream = new FileStream(smallFilePath, FileMode.Open);
+				uploadedFile = (await rGraphServiceClient.Me.Drive.Root.ItemWithPath(smallFilePath).Content.Request().PutAsync<DriveItem>(fileStream ));
+				if (uploadedFile != null) {
+					Console.WriteLine($"Uploaded file {smallFilePath} to {uploadedFile.WebUrl}.");
+				} else {
+					Console.WriteLine($"Failure uploading {smallFilePath}");
+				}
+				//uploadedFile = oneDriveHelper.UploadLargeFile(largeFilePath, uploadToSharePoint).GetAwaiter().GetResult();
+//TODO_FR 150 large file upload in session
+				uploadedFile = null;
+				fileStream = new FileStream(largeFilePath, FileMode.Open);
+				UploadSession uploadSession = await rGraphServiceClient.Me.Drive.Root.ItemWithPath(largeFilePath).CreateUploadSession().Request().PostAsync();
+				if (uploadSession != null) {
+					// Chunk size must be divisible by 320KiB, our chunk size will be slightly more than 1MB
+					int maxSizeChunk = (320 * 1024) * 4;
+					ChunkedUploadProvider uploadProvider = new ChunkedUploadProvider(uploadSession, rGraphServiceClient, fileStream, maxSizeChunk);
+					var chunkRequests = uploadProvider.GetUploadChunkRequests();
+					var exceptions = new List<Exception>();
+					var readBuffer = new byte[maxSizeChunk];
+					foreach (var request in chunkRequests) {
+						var result = await uploadProvider.GetChunkRequestResponseAsync(request, exceptions);
+
+						if (result.UploadSucceeded) {
+							uploadedFile = result.ItemResponse;
+						}
+					}
+				}
+
+				if (uploadedFile != null) {
+					Console.WriteLine($"Uploaded file {largeFilePath} to {uploadedFile.WebUrl}.");
+				} else {
+					Console.WriteLine($"Failure uploading {largeFilePath}");
+				}
 
 				/*
 								// Build a client application.
