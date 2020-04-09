@@ -185,7 +185,8 @@ namespace Demo_MS_Graph_SDK
 					rFileStream.Close();
 					rFileStream.Dispose();
 					if (rDriveItem_uploadedFile != null) {
-						m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Uploaded file {sSmallFilePath} to {rDriveItem_uploadedFile.WebUrl}.");
+						//TODO_FR 430 Id der Datei merken, bzw. etwas, mit dem ich die Datei herunterladen kann.
+						m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Uploaded file {sSmallFilePath} to {rDriveItem_uploadedFile.WebUrl}. {rDriveItem_uploadedFile.Id}");
 						Console.WriteLine($"Uploaded file {sSmallFilePath} to {rDriveItem_uploadedFile.WebUrl}.");
 					} else {
 						m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Failure uploading {sSmallFilePath}");
