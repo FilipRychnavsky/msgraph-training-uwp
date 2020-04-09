@@ -156,12 +156,20 @@ namespace Demo_MS_Graph_SDK
 			try {
 				const string userPrincipalName = "Babsi05@CVSDemo05.onmicrosoft.com";
 				//TODO_FR 270 copy Variables from Day 29 and Authenticator from Day 25
-				string appId					= OAuth_ApplicationPermissions.AppId;
+				string sAppId					= OAuth_ApplicationPermissions.AppId; //Dient als ClientID Parameter
 				string sClientSecret	= OAuth_ApplicationPermissions.Secret;
-				//TODO_FR 275 Redirect url?
-				string sTenantID			= OAuth_ApplicationPermissions.Tenant;
+				//Redirect url habe ich von dem Blog - Day 25 geschrieben; ich weiß nicht, wie weit wichtig es ist
+				string sRedirectUri		= "https://localhost:8080";
+				string sInstanceOfAzure = "https://login.microsoftonline.com/{0}";
+				string sAuthority			=	String.Format(System.Globalization.CultureInfo.InvariantCulture, sInstanceOfAzure, OAuth_ApplicationPermissions.Tenant);
+        var rConfidentialClientApplicationBuilder = ConfidentialClientApplicationBuilder.Create(sAppId)
+                                                    .WithAuthority(sAuthority)
+                                                    .WithRedirectUri(sRedirectUri)
+                                                    .WithClientSecret(sClientSecret)
+                                                    .Build();
 				//TODO_FR 190 rAuthenticationProvider; Muster D25 CreateAuthorizationProvider
-//TODO_FR 210 GraphServiceClient - Muster in D25 GetAuthenticatedGraphClient
+				IAuthenticationProvider rAuthenticationProvider = null;
+				//TODO_FR 210 GraphServiceClient - Muster in D25 GetAuthenticatedGraphClient
 				GraphServiceClient rGraphServiceClient = new GraphServiceClient(rAuthenticationProvider);
 				/*
 								// Build a client application.
