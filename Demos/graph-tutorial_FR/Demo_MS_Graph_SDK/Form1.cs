@@ -174,15 +174,15 @@ namespace Demo_MS_Graph_SDK
 				// ConsoleGraphTest.MsalAuthenticationProvider wurde von https://developer.microsoft.com/en-us/graph/blogs/30daysmsgraph-day-15-microsoft-graph-in-dotnet-core-application/
 				IAuthenticationProvider rAuthenticationProvider = new ConsoleGraphTest.MsalAuthenticationProvider(rConfidentialClientApplicationBuilder, scopes.ToArray());
 				GraphServiceClient rGraphServiceClient = new  GraphServiceClient(rAuthenticationProvider);
-			//TODO_FR 240 Kann ich einen Benutzer "vorauswählen"
 				const string sUserPrincipalName = "Babsi05@CVSDemo05.onmicrosoft.com";
 				//TODO_FR 250 Beispiel Day29 OneDriveHelperCall
 				const string smallFilePath = @"SampleFiles\SmallFile.txt";
 				const string largeFilePath = @"SampleFiles\LargeFile.txt";
 				DriveItem uploadedFile = null;
 				FileStream fileStream = new FileStream(smallFilePath, FileMode.Open);
-
-				uploadedFile = (await rGraphServiceClient.Me.Drive.Root.ItemWithPath(smallFilePath).Content.Request().PutAsync<DriveItem>(fileStream ));
+				//uploadedFile = (await rGraphServiceClient.Me.Drive.Root.ItemWithPath(smallFilePath).Content.Request().PutAsync<DriveItem>(fileStream ));
+				// Im Vergleich zum Beispiel Day 29 (Me.Drive.Root) verwende ich Users[sUserPrincipalName].Drive.Root
+				uploadedFile = (await rGraphServiceClient.Users[sUserPrincipalName].Drive.Root.ItemWithPath(smallFilePath).Content.Request().PutAsync<DriveItem>(fileStream ));
 				if (uploadedFile != null) {
 					Console.WriteLine($"Uploaded file {smallFilePath} to {uploadedFile.WebUrl}.");
 				} else {
