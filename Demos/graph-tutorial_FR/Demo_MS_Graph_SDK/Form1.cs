@@ -181,14 +181,14 @@ namespace Demo_MS_Graph_SDK
 				const string largeFilePath = @"SampleFiles\LargeFile.txt";
 				DriveItem uploadedFile = null;
 				FileStream fileStream = new FileStream(smallFilePath, FileMode.Open);
+
 				uploadedFile = (await rGraphServiceClient.Me.Drive.Root.ItemWithPath(smallFilePath).Content.Request().PutAsync<DriveItem>(fileStream ));
 				if (uploadedFile != null) {
 					Console.WriteLine($"Uploaded file {smallFilePath} to {uploadedFile.WebUrl}.");
 				} else {
 					Console.WriteLine($"Failure uploading {smallFilePath}");
 				}
-				//uploadedFile = oneDriveHelper.UploadLargeFile(largeFilePath, uploadToSharePoint).GetAwaiter().GetResult();
-//TODO_FR 150 large file upload in session
+				//	large file upload in session
 				uploadedFile = null;
 				fileStream = new FileStream(largeFilePath, FileMode.Open);
 				UploadSession uploadSession = await rGraphServiceClient.Me.Drive.Root.ItemWithPath(largeFilePath).CreateUploadSession().Request().PostAsync();

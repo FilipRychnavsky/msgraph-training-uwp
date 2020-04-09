@@ -141,4 +141,8 @@
     <Content Include="SampleFiles\SmallFile.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>if not exist $(ProjectDir)$(OutDir)SampleFiles mkdir $(ProjectDir)$(OutDir)SampleFiles
+copy $(ProjectDir)SampleFiles\*.* $(ProjectDir)$(OutDir)SampleFiles</PostBuildEvent>
+  </PropertyGroup>
 </Project>
