@@ -183,11 +183,9 @@ namespace Demo_MS_Graph_SDK
 				if (rAuthenticationResult != null) {
 					var rHttpClient = new HttpClient();
 					//TODO_FR 299 Neuanlage eine Datei in Office 365
-					//TODO_FR 210 WebApiUrl für Neuanlage eines Excel Sheet; Kann man sich in Graph oder Postman inspirieren?
-					//string sWebApiUrl = $"{OAuth_ApplicationPermissions.ApiUrl}v1.0/users";
+					string sWebApiUrl = $"{OAuth_ApplicationPermissions.ApiUrl}v1.0/users";
 					//string sWebApiUrl = $"{OAuth_ApplicationPermissions.ApiUrl}v1.0/me";
-					string sWebApiUrl = $"{OAuth_ApplicationPermissions.ApiUrl}/v1.0/me/drives";
-					//TODO_FR 220 UpStreamen in Office
+					//string sWebApiUrl = $"{OAuth_ApplicationPermissions.ApiUrl}/v1.0/me/drives";
 					// Test: wenn ich kein QualityHeaderValue hinzugefügt habe, habe ich trotzdem gleiches Ergebnis bekommen.
 					if (rHttpClient.DefaultRequestHeaders.Accept == null || !rHttpClient.DefaultRequestHeaders.Accept.Any(m => m.MediaType == "application/json")) {
 						rHttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -200,6 +198,13 @@ namespace Demo_MS_Graph_SDK
 						foreach (JProperty child in rJObectResponse.Properties().Where(p => !p.Name.StartsWith("@"))) {
 							m_rTextBoxResult.Text += System.Environment.NewLine + $"{child.Name} = {child.Value}";
 						}
+						//"f1fefd1e-1e51-469f-be32-d06841756ed6"
+					//TODO_FR 210 WebApiUrl für Neuanlage eines Excel Sheet; Kann man sich in Graph oder Postman inspirieren?
+						string sWebApiUrl_UPLOAD = $"{OAuth_ApplicationPermissions.ApiUrl}/users/f1fefd1e-1e51-469f-be32-d06841756ed6/drive/items";
+					//TODO_FR 220 UpStreamen in Office HttpContent Parameter
+var rUploadSession = await DriveItemCreateUploadSessionRequest
+HttpContent rhttpContent 
+						rHttpClient.PutAsync(sWebApiUrl_UPLOAD,);
 						//TODO_FR 230 Downstream (oder bekommen wir einen Link auf neu angelegte Datei zurück)
 					} else {
 						m_rTextBoxResult.Text += System.Environment.NewLine + $"Failed to call the Web Api: {rHttpResponseMessage.StatusCode}";
