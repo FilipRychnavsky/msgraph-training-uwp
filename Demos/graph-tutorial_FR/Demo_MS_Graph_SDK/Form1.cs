@@ -155,8 +155,6 @@ namespace Demo_MS_Graph_SDK
 			//TODO_FR 650 Den Code auch in einer VM in der cloud testen (wegen Packages; was Borja noch installieren muss)
 
 			try {
-				const string userPrincipalName = "Babsi05@CVSDemo05.onmicrosoft.com";
-				//TODO_FR 270 copy Variables from Day 29 and Authenticator from Day 25
 				string sAppId					= OAuth_ApplicationPermissions.AppId; //Dient als ClientID Parameter
 				string sClientSecret	= OAuth_ApplicationPermissions.Secret;
 				//Redirect url habe ich von dem Blog - Day 25 geschrieben; ich weiß nicht, wie weit wichtig es ist
@@ -175,6 +173,9 @@ namespace Demo_MS_Graph_SDK
 				// ConsoleGraphTest.MsalAuthenticationProvider wurde von https://developer.microsoft.com/en-us/graph/blogs/30daysmsgraph-day-15-microsoft-graph-in-dotnet-core-application/
 				IAuthenticationProvider rAuthenticationProvider = new ConsoleGraphTest.MsalAuthenticationProvider(rConfidentialClientApplicationBuilder, scopes.ToArray());
 				GraphServiceClient rGraphServiceClient = new  GraphServiceClient(rAuthenticationProvider, );
+				const string userPrincipalName = "Babsi05@CVSDemo05.onmicrosoft.com";
+				//TODO_FR 250 Beispiel Day29 OneDriveHelperCall
+
 				/*
 								// Build a client application.
 								var appId = OAuth_ApplicationPermissions.AppId;
