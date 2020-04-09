@@ -150,7 +150,10 @@ namespace Demo_MS_Graph_SDK
 		{
 			// Doku in SharePoint: https://alphaplan.sharepoint.com/sites/Entwicklung/_layouts/15/Doc.aspx?sourcedoc={ecab1635-5b06-4767-8259-a963bcc3e8f7}&action=edit&wd=target%28Brainstorming.one%7C72cf04d9-f05e-4b91-afc5-be7625335627%2FDemo%20-%20Datei%20hochladen%7Cd5108952-e36f-49ef-be5c-9015928bbaf1%2F%29&wdorigin=703
 			m_rTextBoxResult.Text += System.Environment.NewLine + "m_rButtonExcel_Click Start" + System.Environment.NewLine;
+			const string userPrincipalName = "Babsi05@CVSDemo05.onmicrosoft.com";
+
 			try {
+/*
 				// Build a client application.
 				var appId = OAuth_ApplicationPermissions.AppId;
 				// https://aad.portal.azure.com
@@ -211,6 +214,7 @@ HttpContent rhttpContent
 						m_rTextBoxResult.Text += System.Environment.NewLine + $"Content: {content}";
 					}
 				}
+*/
 			} catch (Microsoft.Graph.ServiceException rException) {
 				m_rTextBoxResult.Text += System.String.Format("\nException in m_rButton_OAuth20_Click:\n{0}", rException.Message);
 				if (rException.InnerException != null) {
