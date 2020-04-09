@@ -148,6 +148,7 @@ namespace Demo_MS_Graph_SDK
 
 		private async void m_rButtonExcel_Click(object sender, EventArgs e)
 		{
+			// Doku in SharePoint: https://alphaplan.sharepoint.com/sites/Entwicklung/_layouts/15/Doc.aspx?sourcedoc={ecab1635-5b06-4767-8259-a963bcc3e8f7}&action=edit&wd=target%28Brainstorming.one%7C72cf04d9-f05e-4b91-afc5-be7625335627%2FDemo%20-%20Datei%20hochladen%7Cd5108952-e36f-49ef-be5c-9015928bbaf1%2F%29&wdorigin=703
 			m_rTextBoxResult.Text += System.Environment.NewLine + "m_rButtonExcel_Click Start" + System.Environment.NewLine;
 			try {
 				// Build a client application.
@@ -161,10 +162,6 @@ namespace Demo_MS_Graph_SDK
 										.WithClientSecret(sClientSecret)
 										.WithAuthority(new Uri(sAuthority))
 										.Build();
-				// https://docs.microsoft.com/en-us/graph/sdks/choose-authentication-providers?tabs=CS#authorization-code-provider
-				// https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow
-				// Demo für daemon in console un OAuth 2.0 https://github.com/Azure-Samples/active-directory-dotnetcore-daemon-v2/blob/master/1-Call-MSGraph/README.md
-
 				// With client credentials flows the scopes is ALWAYS of the shape "resource/.default", as the 
 				// application permissions need to be set statically (in the portal or by PowerShell), and then granted by
 				// a tenant administrator. 
