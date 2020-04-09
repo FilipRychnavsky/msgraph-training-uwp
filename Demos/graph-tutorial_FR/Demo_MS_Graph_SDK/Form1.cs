@@ -175,106 +175,53 @@ namespace Demo_MS_Graph_SDK
 				IAuthenticationProvider rAuthenticationProvider = new ConsoleGraphTest.MsalAuthenticationProvider(rConfidentialClientApplicationBuilder, scopes.ToArray());
 				GraphServiceClient rGraphServiceClient = new  GraphServiceClient(rAuthenticationProvider);
 				const string sUserPrincipalName = "Babsi05@CVSDemo05.onmicrosoft.com";
-				//TODO_FR 250 Beispiel Day29 OneDriveHelperCall
+				// Beispiel Day29 OneDriveHelperCall
 				const string smallFilePath = @"SampleFiles\SmallFile.txt";
 				const string largeFilePath = @"SampleFiles\LargeFile.txt";
-				DriveItem uploadedFile = null;
-				FileStream fileStream = new FileStream(smallFilePath, FileMode.Open);
-				//uploadedFile = (await rGraphServiceClient.Me.Drive.Root.ItemWithPath(smallFilePath).Content.Request().PutAsync<DriveItem>(fileStream ));
-				// Im Vergleich zum Beispiel Day 29 (Me.Drive.Root) verwende ich Users[sUserPrincipalName].Drive.Root
-				uploadedFile = (await rGraphServiceClient.Users[sUserPrincipalName].Drive.Root.ItemWithPath(smallFilePath).Content.Request().PutAsync<DriveItem>(fileStream ));
-				if (uploadedFile != null) {
-					Console.WriteLine($"Uploaded file {smallFilePath} to {uploadedFile.WebUrl}.");
-				} else {
-					Console.WriteLine($"Failure uploading {smallFilePath}");
-				}
-				//	large file upload in session
-				uploadedFile = null;
-				fileStream = new FileStream(largeFilePath, FileMode.Open);
-				UploadSession uploadSession = await rGraphServiceClient.Me.Drive.Root.ItemWithPath(largeFilePath).CreateUploadSession().Request().PostAsync();
-				if (uploadSession != null) {
-					// Chunk size must be divisible by 320KiB, our chunk size will be slightly more than 1MB
-					int maxSizeChunk = (320 * 1024) * 4;
-					ChunkedUploadProvider uploadProvider = new ChunkedUploadProvider(uploadSession, rGraphServiceClient, fileStream, maxSizeChunk);
-					var chunkRequests = uploadProvider.GetUploadChunkRequests();
-					var exceptions = new List<Exception>();
-					var readBuffer = new byte[maxSizeChunk];
-					foreach (var request in chunkRequests) {
-						var result = await uploadProvider.GetChunkRequestResponseAsync(request, exceptions);
-
-						if (result.UploadSucceeded) {
-							uploadedFile = result.ItemResponse;
-						}
+				// Wegen der Freigabe von Instanzen von FileStream habe ich sie in code Blöcke verschoben
+				{
+					DriveItem uploadedFile = null;
+					FileStream fileStream = new FileStream(smallFilePath, FileMode.Open);
+					//uploadedFile = (await rGraphServiceClient.Me.Drive.Root.ItemWithPath(smallFilePath).Content.Request().PutAsync<DriveItem>(fileStream ));
+					// Im Vergleich zum Beispiel Day 29 (Me.Drive.Root) verwende ich Users[sUserPrincipalName].Drive.Root
+					uploadedFile = (await rGraphServiceClient.Users[sUserPrincipalName].Drive.Root.ItemWithPath(smallFilePath).Content.Request().PutAsync<DriveItem>(fileStream));
+					fileStream.Close();
+					fileStream.Dispose();
+					if (uploadedFile != null) {
+						Console.WriteLine($"Uploaded file {smallFilePath} to {uploadedFile.WebUrl}.");
+					} else {
+						Console.WriteLine($"Failure uploading {smallFilePath}");
 					}
 				}
+				//	large file upload in session
+				{
+					DriveItem uploadedFile = null;
+					FileStream fileStream = new FileStream(largeFilePath, FileMode.Open);
+					UploadSession uploadSession = await rGraphServiceClient.Users[sUserPrincipalName].Drive.Root.ItemWithPath(largeFilePath).CreateUploadSession().Request().PostAsync();
+					if (uploadSession != null) {
+						// Chunk size must be divisible by 320KiB, our chunk size will be slightly more than 1MB
+						int maxSizeChunk = (320 * 1024) * 4;
+						ChunkedUploadProvider uploadProvider = new ChunkedUploadProvider(uploadSession, rGraphServiceClient, fileStream, maxSizeChunk);
+						var chunkRequests = uploadProvider.GetUploadChunkRequests();
+						var exceptions = new List<Exception>();
+						var readBuffer = new byte[maxSizeChunk];
+						foreach (var request in chunkRequests) {
+							var result = await uploadProvider.GetChunkRequestResponseAsync(request, exceptions);
 
-				if (uploadedFile != null) {
-					Console.WriteLine($"Uploaded file {largeFilePath} to {uploadedFile.WebUrl}.");
-				} else {
-					Console.WriteLine($"Failure uploading {largeFilePath}");
+							if (result.UploadSucceeded) {
+								uploadedFile = result.ItemResponse;
+							}
+						}
+					}
+					fileStream.Close();
+					fileStream.Dispose();
+					if (uploadedFile != null) {
+						Console.WriteLine($"Uploaded file {largeFilePath} to {uploadedFile.WebUrl}.");
+					} else {
+						Console.WriteLine($"Failure uploading {largeFilePath}");
+					}
 				}
-
-				/*
-								// Build a client application.
-								var appId = OAuth_ApplicationPermissions.AppId;
-								// https://aad.portal.azure.com
-								string sClientSecret = OAuth_ApplicationPermissions.Secret;
-								string sInstanceOfAzure = "https://login.microsoftonline.com/{0}";
-								string sAuthority = String.Format(System.Globalization.CultureInfo.InvariantCulture, sInstanceOfAzure, OAuth_ApplicationPermissions.Tenant);
-								IConfidentialClientApplication rConfidentialClientApplication = ConfidentialClientApplicationBuilder
-														.Create(appId)
-														.WithClientSecret(sClientSecret)
-														.WithAuthority(new Uri(sAuthority))
-														.Build();
-								// With client credentials flows the scopes is ALWAYS of the shape "resource/.default", as the 
-								// application permissions need to be set statically (in the portal or by PowerShell), and then granted by
-								// a tenant administrator. 
-								string[] scopes = new string[] { $"{OAuth_ApplicationPermissions.ApiUrl}.default" };
-
-								AuthenticationResult rAuthenticationResult = null;
-								try {
-									rAuthenticationResult = await rConfidentialClientApplication.AcquireTokenForClient(scopes)
-											.ExecuteAsync();
-									m_rTextBoxResult.Text += "Token acquired" + System.Environment.NewLine;
-								} catch (MsalServiceException ex) when (ex.Message.Contains("AADSTS70011")) {
-									// Invalid scope. The scope has to be of the form "https://resourceurl/.default"
-									// Mitigation: change the scope to be as expected
-									m_rTextBoxResult.Text += System.String.Format("Scope provided is not supported.\n");
-								}
-								if (rAuthenticationResult != null) {
-									var rHttpClient = new HttpClient();
-									string sWebApiUrl = $"{OAuth_ApplicationPermissions.ApiUrl}v1.0/users";
-									//string sWebApiUrl = $"{OAuth_ApplicationPermissions.ApiUrl}v1.0/me";
-									//string sWebApiUrl = $"{OAuth_ApplicationPermissions.ApiUrl}/v1.0/me/drives";
-									// Test: wenn ich kein QualityHeaderValue hinzugefügt habe, habe ich trotzdem gleiches Ergebnis bekommen.
-									if (rHttpClient.DefaultRequestHeaders.Accept == null || !rHttpClient.DefaultRequestHeaders.Accept.Any(m => m.MediaType == "application/json")) {
-										rHttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-									}
-									rHttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", rAuthenticationResult.AccessToken);
-									HttpResponseMessage rHttpResponseMessage = await rHttpClient.GetAsync(sWebApiUrl);
-									if (rHttpResponseMessage.IsSuccessStatusCode) {
-										string sResponseAsString = await rHttpResponseMessage.Content.ReadAsStringAsync();
-										JObject rJObectResponse = JsonConvert.DeserializeObject(sResponseAsString) as JObject;
-										foreach (JProperty child in rJObectResponse.Properties().Where(p => !p.Name.StartsWith("@"))) {
-											m_rTextBoxResult.Text += System.Environment.NewLine + $"{child.Name} = {child.Value}";
-										}
-										//"f1fefd1e-1e51-469f-be32-d06841756ed6"
-									//TODO_FR 410 WebApiUrl für Neuanlage eines Excel Sheet; Kann man sich in Graph oder Postman inspirieren?
-										string sWebApiUrl_UPLOAD = $"{OAuth_ApplicationPermissions.ApiUrl}/users/f1fefd1e-1e51-469f-be32-d06841756ed6/drive/items";
-									//TODO_FR 420 UpStreamen in Office HttpContent Parameter
-				var rUploadSession = await DriveItemCreateUploadSessionRequest
-				HttpContent rhttpContent 
-										rHttpClient.PutAsync(sWebApiUrl_UPLOAD,);
-										//TODO_FR 430 Downstream (oder bekommen wir einen Link auf neu angelegte Datei zurück)
-									} else {
-										m_rTextBoxResult.Text += System.Environment.NewLine + $"Failed to call the Web Api: {rHttpResponseMessage.StatusCode}";
-										string content = await rHttpResponseMessage.Content.ReadAsStringAsync();
-										// Note that if you got reponse.Code == 403 and reponse.content.code == "Authorization_RequestDenied"
-										// this is because the tenant admin as not granted consent for the application to call the Web API
-										m_rTextBoxResult.Text += System.Environment.NewLine + $"Content: {content}";
-									}
-								}
-				*/
+				//TODO_FR 430 Downstream (oder bekommen wir einen Link auf neu angelegte Datei zurück)
 			} catch (Microsoft.Graph.ServiceException rException) {
 				m_rTextBoxResult.Text += System.String.Format("\nException in m_rButton_OAuth20_Click:\n{0}", rException.Message);
 				if (rException.InnerException != null) {
