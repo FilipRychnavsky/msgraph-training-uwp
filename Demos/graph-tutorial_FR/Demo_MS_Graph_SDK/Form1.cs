@@ -185,8 +185,10 @@ namespace Demo_MS_Graph_SDK
 					rFileStream.Close();
 					rFileStream.Dispose();
 					if (rDriveItem_uploadedFile != null) {
+						m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Uploaded file {sSmallFilePath} to {rDriveItem_uploadedFile.WebUrl}.");
 						Console.WriteLine($"Uploaded file {sSmallFilePath} to {rDriveItem_uploadedFile.WebUrl}.");
 					} else {
+						m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Failure uploading {sSmallFilePath}");
 						Console.WriteLine($"Failure uploading {sSmallFilePath}");
 					}
 				}
@@ -213,19 +215,21 @@ namespace Demo_MS_Graph_SDK
 					rFileStream.Close();
 					rFileStream.Dispose();
 					if (rDriveItem_uploadedFile != null) {
-						Console.WriteLine($"Uploaded file {rLargeFilePath} to {rDriveItem_uploadedFile.WebUrl}.");
+						Console.WriteLine($"{System.Environment.NewLine}Uploaded file {rLargeFilePath} to {rDriveItem_uploadedFile.WebUrl}.");
+						m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Uploaded file {rLargeFilePath} to {rDriveItem_uploadedFile.WebUrl}.");
 					} else {
 						Console.WriteLine($"Failure uploading {rLargeFilePath}");
+						m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Failure uploading {rLargeFilePath}");
 					}
 				}
 				//TODO_FR 430 Downstream (oder bekommen wir einen Link auf neu angelegte Datei zurück)
 			} catch (Microsoft.Graph.ServiceException rException) {
-				m_rTextBoxResult.Text += System.String.Format("\nException in m_rButton_OAuth20_Click:\n{0}", rException.Message);
+				m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Exception in m_rButton_OAuth20_Click:{System.Environment.NewLine}");
 				if (rException.InnerException != null) {
-					m_rTextBoxResult.Text += System.String.Format("\nInner Exception:\n{0}", rException.InnerException.Message);
+					m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Inner Exception:{System.Environment.NewLine}{rException.InnerException.Message}");
 				}
 			} catch (System.Exception rException) {
-				m_rTextBoxResult.Text += System.String.Format("\nException in m_rButton_OAuth20_Click:\n{0}", rException.Message);
+				m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Exception in m_rButton_OAuth20_Click:\n{rException.Message}");
 			}
 		}
 	}
