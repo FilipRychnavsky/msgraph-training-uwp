@@ -151,10 +151,7 @@ namespace Demo_MS_Graph_SDK
 		{
 			// Doku in SharePoint: https://alphaplan.sharepoint.com/sites/Entwicklung/_layouts/15/Doc.aspx?sourcedoc={ecab1635-5b06-4767-8259-a963bcc3e8f7}&action=edit&wd=target%28Brainstorming.one%7C72cf04d9-f05e-4b91-afc5-be7625335627%2FDemo%20-%20Datei%20hochladen%7Cd5108952-e36f-49ef-be5c-9015928bbaf1%2F%29&wdorigin=703
 			m_rTextBoxResult.Text += System.Environment.NewLine + "m_rButtonExcel_Click Start" + System.Environment.NewLine;
-			//TODO_FR 299 Neuanlage eine Datei in Office 365; 
-			//TODO_FR 280 rename Variables
 			//TODO_FR 650 Den Code auch in einer VM in der cloud testen (wegen Packages; was Borja noch installieren muss)
-
 			try {
 				string sAppId					= OAuth_ApplicationPermissions.AppId; //Dient als ClientID Parameter
 				string sClientSecret	= OAuth_ApplicationPermissions.Secret;
@@ -176,49 +173,49 @@ namespace Demo_MS_Graph_SDK
 				GraphServiceClient rGraphServiceClient = new  GraphServiceClient(rAuthenticationProvider);
 				const string sUserPrincipalName = "Babsi05@CVSDemo05.onmicrosoft.com";
 				// Beispiel Day29 OneDriveHelperCall
-				const string smallFilePath = @"SampleFiles\SmallFile.txt";
-				const string largeFilePath = @"SampleFiles\LargeFile.txt";
+				const string sSmallFilePath = @"SampleFiles\SmallFile.txt";
+				const string rLargeFilePath = @"SampleFiles\LargeFile.txt";
 				// Wegen der Freigabe von Instanzen von FileStream habe ich sie in code Blöcke verschoben
 				{
-					DriveItem uploadedFile = null;
-					FileStream fileStream = new FileStream(smallFilePath, FileMode.Open);
+					DriveItem rDriveItem_uploadedFile = null;
+					FileStream rFileStream = new FileStream(sSmallFilePath, FileMode.Open);
 					//uploadedFile = (await rGraphServiceClient.Me.Drive.Root.ItemWithPath(smallFilePath).Content.Request().PutAsync<DriveItem>(fileStream ));
 					// Im Vergleich zum Beispiel Day 29 (Me.Drive.Root) verwende ich Users[sUserPrincipalName].Drive.Root
-					uploadedFile = (await rGraphServiceClient.Users[sUserPrincipalName].Drive.Root.ItemWithPath(smallFilePath).Content.Request().PutAsync<DriveItem>(fileStream));
-					fileStream.Close();
-					fileStream.Dispose();
-					if (uploadedFile != null) {
-						Console.WriteLine($"Uploaded file {smallFilePath} to {uploadedFile.WebUrl}.");
+					rDriveItem_uploadedFile = (await rGraphServiceClient.Users[sUserPrincipalName].Drive.Root.ItemWithPath(sSmallFilePath).Content.Request().PutAsync<DriveItem>(rFileStream));
+					rFileStream.Close();
+					rFileStream.Dispose();
+					if (rDriveItem_uploadedFile != null) {
+						Console.WriteLine($"Uploaded file {sSmallFilePath} to {rDriveItem_uploadedFile.WebUrl}.");
 					} else {
-						Console.WriteLine($"Failure uploading {smallFilePath}");
+						Console.WriteLine($"Failure uploading {sSmallFilePath}");
 					}
 				}
 				//	large file upload in session
 				{
-					DriveItem uploadedFile = null;
-					FileStream fileStream = new FileStream(largeFilePath, FileMode.Open);
-					UploadSession uploadSession = await rGraphServiceClient.Users[sUserPrincipalName].Drive.Root.ItemWithPath(largeFilePath).CreateUploadSession().Request().PostAsync();
-					if (uploadSession != null) {
+					DriveItem rDriveItem_uploadedFile = null;
+					FileStream rFileStream = new FileStream(rLargeFilePath, FileMode.Open);
+					UploadSession rUploadSession = await rGraphServiceClient.Users[sUserPrincipalName].Drive.Root.ItemWithPath(rLargeFilePath).CreateUploadSession().Request().PostAsync();
+					if (rUploadSession != null) {
 						// Chunk size must be divisible by 320KiB, our chunk size will be slightly more than 1MB
 						int maxSizeChunk = (320 * 1024) * 4;
-						ChunkedUploadProvider uploadProvider = new ChunkedUploadProvider(uploadSession, rGraphServiceClient, fileStream, maxSizeChunk);
-						var chunkRequests = uploadProvider.GetUploadChunkRequests();
-						var exceptions = new List<Exception>();
-						var readBuffer = new byte[maxSizeChunk];
-						foreach (var request in chunkRequests) {
-							var result = await uploadProvider.GetChunkRequestResponseAsync(request, exceptions);
+						ChunkedUploadProvider rChunkedUploadProvider = new ChunkedUploadProvider(rUploadSession, rGraphServiceClient, rFileStream, maxSizeChunk);
+						var rvUploadChunkRequests = rChunkedUploadProvider.GetUploadChunkRequests();
+						var rvExceptions = new List<Exception>();
+						var abyteReadBuffer = new byte[maxSizeChunk];
+						foreach (var rUploadChungRequest in rvUploadChunkRequests) {
+							var rUploadChunkResult = await rChunkedUploadProvider.GetChunkRequestResponseAsync(rUploadChungRequest, rvExceptions);
 
-							if (result.UploadSucceeded) {
-								uploadedFile = result.ItemResponse;
+							if (rUploadChunkResult.UploadSucceeded) {
+								rDriveItem_uploadedFile = rUploadChunkResult.ItemResponse;
 							}
 						}
 					}
-					fileStream.Close();
-					fileStream.Dispose();
-					if (uploadedFile != null) {
-						Console.WriteLine($"Uploaded file {largeFilePath} to {uploadedFile.WebUrl}.");
+					rFileStream.Close();
+					rFileStream.Dispose();
+					if (rDriveItem_uploadedFile != null) {
+						Console.WriteLine($"Uploaded file {rLargeFilePath} to {rDriveItem_uploadedFile.WebUrl}.");
 					} else {
-						Console.WriteLine($"Failure uploading {largeFilePath}");
+						Console.WriteLine($"Failure uploading {rLargeFilePath}");
 					}
 				}
 				//TODO_FR 430 Downstream (oder bekommen wir einen Link auf neu angelegte Datei zurück)
