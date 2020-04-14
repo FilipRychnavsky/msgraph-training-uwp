@@ -175,7 +175,6 @@ namespace Demo_MS_Graph_SDK
 		{
 			// Doku in SharePoint: https://alphaplan.sharepoint.com/sites/Entwicklung/_layouts/15/Doc.aspx?sourcedoc={ecab1635-5b06-4767-8259-a963bcc3e8f7}&action=edit&wd=target%28Brainstorming.one%7C72cf04d9-f05e-4b91-afc5-be7625335627%2FDemo%20-%20Datei%20hochladen%7Cd5108952-e36f-49ef-be5c-9015928bbaf1%2F%29&wdorigin=703
 			m_rTextBoxResult.Text += System.Environment.NewLine + "m_rButtonExcel_Click Start" + System.Environment.NewLine;
-			//TODO_FR 650 Den Code auch in einer VM in der cloud testen (wegen Packages; was Borja noch installieren muss)
 			try {
 				string sAppId = OAuth_ApplicationPermissions.AppId; //Dient als ClientID Parameter
 				string sClientSecret = OAuth_ApplicationPermissions.Secret;
@@ -233,7 +232,6 @@ namespace Demo_MS_Graph_SDK
 						m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}ExpirationDateTime: {rUploadSession.ExpirationDateTime}: ");
 					}
 
-					//TODO_FR 430 Id der Datei merken, bzw. etwas, mit dem ich die Datei herunterladen kann.
 					if (rDriveItem_uploadedFile != null) {
 						Console.WriteLine($"{System.Environment.NewLine}Uploaded file {rLargeFilePath} to {rDriveItem_uploadedFile.WebUrl}.");
 						m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Uploaded file {rLargeFilePath} to {rDriveItem_uploadedFile.WebUrl}.");
@@ -245,7 +243,6 @@ namespace Demo_MS_Graph_SDK
 						m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Failure uploading {rLargeFilePath}");
 					}
 				}
-				//TODO_FR 430 Downstream (oder bekommen wir einen Link auf neu angelegte Datei zurück)
 			} catch (Microsoft.Graph.ServiceException rException) {
 				m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Exception in m_rButton_OAuth20_Click:{System.Environment.NewLine}");
 				if (rException.InnerException != null) {
@@ -278,6 +275,9 @@ namespace Demo_MS_Graph_SDK
 			}
 		}
 
-
+		private void m_rButtonDownload_Click(object sender, EventArgs e)
+		{
+			//TODO_FR Download file für Id in m_rTextBoxId.Text 
+		}
 	}
 }

@@ -35,6 +35,7 @@
 			this.m_rTextBoxId = new System.Windows.Forms.TextBox();
 			this.m_rLabelForLink = new System.Windows.Forms.Label();
 			this.m_rLinkLabel = new System.Windows.Forms.LinkLabel();
+			this.m_rButtonDownload = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// m_rTextBoxResult
@@ -120,11 +121,24 @@
 			this.m_rLinkLabel.TabIndex = 7;
 			this.m_rLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.m_rLinkLabel_LinkClicked);
 			// 
+			// m_rButtonDownload
+			// 
+			this.m_rButtonDownload.BackColor = System.Drawing.Color.PaleGreen;
+			this.m_rButtonDownload.Location = new System.Drawing.Point(60, 519);
+			this.m_rButtonDownload.Margin = new System.Windows.Forms.Padding(6);
+			this.m_rButtonDownload.Name = "m_rButtonDownload";
+			this.m_rButtonDownload.Size = new System.Drawing.Size(398, 92);
+			this.m_rButtonDownload.TabIndex = 8;
+			this.m_rButtonDownload.Text = "&Download";
+			this.m_rButtonDownload.UseVisualStyleBackColor = false;
+			this.m_rButtonDownload.Click += new System.EventHandler(this.m_rButtonDownload_Click);
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1600, 865);
+			this.Controls.Add(this.m_rButtonDownload);
 			this.Controls.Add(this.m_rLinkLabel);
 			this.Controls.Add(this.m_rLabelForLink);
 			this.Controls.Add(this.m_rTextBoxId);
@@ -150,6 +164,7 @@
 		private System.Windows.Forms.TextBox m_rTextBoxId;
 		private System.Windows.Forms.Label m_rLabelForLink;
 		private System.Windows.Forms.LinkLabel m_rLinkLabel;
+		private System.Windows.Forms.Button m_rButtonDownload;
 	}
 }
 
