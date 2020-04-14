@@ -147,6 +147,29 @@ namespace Demo_MS_Graph_SDK
 			}
 		}
 
+		private async Task UploadSmallFile(GraphServiceClient rGraphServiceClient, string sUserPrincipalName)
+		{
+			const string sSmallFilePath = @"SampleFiles\SmallFile.txt";
+			//const string rLargeFilePath = @"SampleFiles\LargeFile.txt";
+			// Wegen der Freigabe von Instanzen von FileStream habe ich sie in code Blöcke verschoben
+			{
+				DriveItem rDriveItem_uploadedFile = null;
+				FileStream rFileStream = new FileStream(sSmallFilePath, FileMode.Open);
+				//uploadedFile = (await rGraphServiceClient.Me.Drive.Root.ItemWithPath(smallFilePath).Content.Request().PutAsync<DriveItem>(fileStream ));
+				// Im Vergleich zum Beispiel Day 29 (Me.Drive.Root) verwende ich Users[sUserPrincipalName].Drive.Root
+				rDriveItem_uploadedFile = (await rGraphServiceClient.Users[sUserPrincipalName].Drive.Root.ItemWithPath(sSmallFilePath).Content.Request().PutAsync<DriveItem>(rFileStream));
+				rFileStream.Close();
+				rFileStream.Dispose();
+				if (rDriveItem_uploadedFile != null) {
+					m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Uploaded file {sSmallFilePath} to {rDriveItem_uploadedFile.WebUrl}. {rDriveItem_uploadedFile.Id}");
+					Console.WriteLine($"Uploaded file {sSmallFilePath} to {rDriveItem_uploadedFile.WebUrl}.");
+				} else {
+					m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Failure uploading {sSmallFilePath}");
+					Console.WriteLine($"Failure uploading {sSmallFilePath}");
+				}
+			}
+		}
+
 // OAuth 2.0 ClientSecret
 		private async void m_rButtonUploadExcel_Click(object sender, EventArgs e)
 		{
@@ -174,7 +197,7 @@ namespace Demo_MS_Graph_SDK
 				GraphServiceClient rGraphServiceClient = new GraphServiceClient(rAuthenticationProvider);
 				const string sUserPrincipalName = "Babsi05@CVSDemo05.onmicrosoft.com";
 				// Beispiel Day29 OneDriveHelperCall
-				await UploadSmallFile(rGraphServiceClient, sUserPrincipalName);
+				//await UploadSmallFile(rGraphServiceClient, sUserPrincipalName);
 				const string rLargeFilePath = @"SampleFiles\Demo FR.xlsx";
 				// Excel als	large file upload in session hochladen
 				{
@@ -222,29 +245,6 @@ namespace Demo_MS_Graph_SDK
 				}
 			} catch (System.Exception rException) {
 				m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Exception in m_rButton_OAuth20_Click:\n{rException.Message}");
-			}
-		}
-
-		private async Task UploadSmallFile(GraphServiceClient rGraphServiceClient, string sUserPrincipalName)
-		{
-			const string sSmallFilePath = @"SampleFiles\SmallFile.txt";
-			//const string rLargeFilePath = @"SampleFiles\LargeFile.txt";
-			// Wegen der Freigabe von Instanzen von FileStream habe ich sie in code Blöcke verschoben
-			{
-				DriveItem rDriveItem_uploadedFile = null;
-				FileStream rFileStream = new FileStream(sSmallFilePath, FileMode.Open);
-				//uploadedFile = (await rGraphServiceClient.Me.Drive.Root.ItemWithPath(smallFilePath).Content.Request().PutAsync<DriveItem>(fileStream ));
-				// Im Vergleich zum Beispiel Day 29 (Me.Drive.Root) verwende ich Users[sUserPrincipalName].Drive.Root
-				rDriveItem_uploadedFile = (await rGraphServiceClient.Users[sUserPrincipalName].Drive.Root.ItemWithPath(sSmallFilePath).Content.Request().PutAsync<DriveItem>(rFileStream));
-				rFileStream.Close();
-				rFileStream.Dispose();
-				if (rDriveItem_uploadedFile != null) {
-					m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Uploaded file {sSmallFilePath} to {rDriveItem_uploadedFile.WebUrl}. {rDriveItem_uploadedFile.Id}");
-					Console.WriteLine($"Uploaded file {sSmallFilePath} to {rDriveItem_uploadedFile.WebUrl}.");
-				} else {
-					m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Failure uploading {sSmallFilePath}");
-					Console.WriteLine($"Failure uploading {sSmallFilePath}");
-				}
 			}
 		}
 
