@@ -78,7 +78,7 @@
 			this.m_rButtonExcel.Name = "m_rButtonExcel";
 			this.m_rButtonExcel.Size = new System.Drawing.Size(398, 92);
 			this.m_rButtonExcel.TabIndex = 2;
-			this.m_rButtonExcel.Text = "New Excel OAuth 2.0 ClientSecret";
+			this.m_rButtonExcel.Text = "Upload Excel OAuth 2.0 ClientSecret";
 			this.m_rButtonExcel.UseVisualStyleBackColor = false;
 			this.m_rButtonExcel.Click += new System.EventHandler(this.m_rButtonExcel_Click);
 			// 

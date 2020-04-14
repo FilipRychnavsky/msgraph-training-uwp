@@ -147,6 +147,8 @@ namespace Demo_MS_Graph_SDK
 			}
 		}
 
+// OAuth 2.0 ClientSecret
+//TODO_FR rename UploadExcel
 		private async void m_rButtonExcel_Click(object sender, EventArgs e)
 		{
 			// Doku in SharePoint: https://alphaplan.sharepoint.com/sites/Entwicklung/_layouts/15/Doc.aspx?sourcedoc={ecab1635-5b06-4767-8259-a963bcc3e8f7}&action=edit&wd=target%28Brainstorming.one%7C72cf04d9-f05e-4b91-afc5-be7625335627%2FDemo%20-%20Datei%20hochladen%7Cd5108952-e36f-49ef-be5c-9015928bbaf1%2F%29&wdorigin=703
@@ -174,7 +176,8 @@ namespace Demo_MS_Graph_SDK
 				const string sUserPrincipalName = "Babsi05@CVSDemo05.onmicrosoft.com";
 				// Beispiel Day29 OneDriveHelperCall
 				const string sSmallFilePath = @"SampleFiles\SmallFile.txt";
-				const string rLargeFilePath = @"SampleFiles\LargeFile.txt";
+				//const string rLargeFilePath = @"SampleFiles\LargeFile.txt";
+				const string rLargeFilePath = @"SampleFiles\Demo FR.xlsx";
 				// Wegen der Freigabe von Instanzen von FileStream habe ich sie in code Blöcke verschoben
 				{
 					DriveItem rDriveItem_uploadedFile = null;
@@ -185,7 +188,6 @@ namespace Demo_MS_Graph_SDK
 					rFileStream.Close();
 					rFileStream.Dispose();
 					if (rDriveItem_uploadedFile != null) {
-						//TODO_FR 430 Id der Datei merken, bzw. etwas, mit dem ich die Datei herunterladen kann.
 						m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Uploaded file {sSmallFilePath} to {rDriveItem_uploadedFile.WebUrl}. {rDriveItem_uploadedFile.Id}");
 						Console.WriteLine($"Uploaded file {sSmallFilePath} to {rDriveItem_uploadedFile.WebUrl}.");
 					} else {
@@ -193,7 +195,7 @@ namespace Demo_MS_Graph_SDK
 						Console.WriteLine($"Failure uploading {sSmallFilePath}");
 					}
 				}
-				//	large file upload in session
+				// Excel als	large file upload in session hochladen
 				{
 					DriveItem rDriveItem_uploadedFile = null;
 					FileStream rFileStream = new FileStream(rLargeFilePath, FileMode.Open);
@@ -215,6 +217,7 @@ namespace Demo_MS_Graph_SDK
 					}
 					rFileStream.Close();
 					rFileStream.Dispose();
+						//TODO_FR 430 Id der Datei merken, bzw. etwas, mit dem ich die Datei herunterladen kann.
 					if (rDriveItem_uploadedFile != null) {
 						Console.WriteLine($"{System.Environment.NewLine}Uploaded file {rLargeFilePath} to {rDriveItem_uploadedFile.WebUrl}.");
 						m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Uploaded file {rLargeFilePath} to {rDriveItem_uploadedFile.WebUrl}.");
