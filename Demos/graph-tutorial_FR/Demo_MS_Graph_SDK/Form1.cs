@@ -234,6 +234,9 @@ namespace Demo_MS_Graph_SDK
 				m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Exception in m_rButton_OAuth20_Click:{System.Environment.NewLine}");
 				if (rException.InnerException != null) {
 					m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Inner Exception:{System.Environment.NewLine}{rException.InnerException.Message}");
+				} else {
+					m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}{rException.Message}");
+					m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Code: {rException.StatusCode}");
 				}
 			} catch (System.Exception rException) {
 				m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Exception in m_rButton_OAuth20_Click:\n{rException.Message}");
