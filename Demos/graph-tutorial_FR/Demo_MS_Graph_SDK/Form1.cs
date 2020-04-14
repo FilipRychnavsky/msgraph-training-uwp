@@ -176,24 +176,24 @@ namespace Demo_MS_Graph_SDK
 			// Doku in SharePoint: https://alphaplan.sharepoint.com/sites/Entwicklung/_layouts/15/Doc.aspx?sourcedoc={ecab1635-5b06-4767-8259-a963bcc3e8f7}&action=edit&wd=target%28Brainstorming.one%7C72cf04d9-f05e-4b91-afc5-be7625335627%2FDemo%20-%20Datei%20hochladen%7Cd5108952-e36f-49ef-be5c-9015928bbaf1%2F%29&wdorigin=703
 			m_rTextBoxResult.Text += System.Environment.NewLine + "m_rButtonExcel_Click Start" + System.Environment.NewLine;
 			try {
-				string sAppId = OAuth_ApplicationPermissions.AppId; //Dient als ClientID Parameter
-				string sClientSecret = OAuth_ApplicationPermissions.Secret;
+				string m_sAppId = OAuth_ApplicationPermissions.AppId; //Dient als ClientID Parameter
+				string m_sClientSecret = OAuth_ApplicationPermissions.Secret;
 				//Redirect url habe ich von dem Blog - Day 25 geschrieben; ich weiß nicht, wie weit wichtig es ist
-				string sRedirectUri = "https://localhost:8080";
-				string sInstanceOfAzure = "https://login.microsoftonline.com/{0}";
-				string sAuthority = String.Format(System.Globalization.CultureInfo.InvariantCulture, sInstanceOfAzure, OAuth_ApplicationPermissions.Tenant);
-				var rConfidentialClientApplicationBuilder = ConfidentialClientApplicationBuilder.Create(sAppId)
-																										.WithAuthority(sAuthority)
-																										.WithRedirectUri(sRedirectUri)
-																										.WithClientSecret(sClientSecret)
+				string m_sRedirectUri = "https://localhost:8080";
+				string m_sInstanceOfAzure = "https://login.microsoftonline.com/{0}";
+				string m_sAuthority = String.Format(System.Globalization.CultureInfo.InvariantCulture, m_sInstanceOfAzure, OAuth_ApplicationPermissions.Tenant);
+				var m_rConfidentialClientApplicationBuilder = ConfidentialClientApplicationBuilder.Create(m_sAppId)
+																										.WithAuthority(m_sAuthority)
+																										.WithRedirectUri(m_sRedirectUri)
+																										.WithClientSecret(m_sClientSecret)
 																										.Build();
 				// With client credentials flows the scopes is ALWAYS of the shape "resource/.default", as the 
 				// application permissions need to be set statically (in the portal or by PowerShell), and then granted by
 				// a tenant administrator. 
-				string[] scopes = new string[] { $"{OAuth_ApplicationPermissions.ApiUrl}.default" };
+				string[] m_asScopes = new string[] { $"{OAuth_ApplicationPermissions.ApiUrl}.default" };
 				// ConsoleGraphTest.MsalAuthenticationProvider wurde von https://developer.microsoft.com/en-us/graph/blogs/30daysmsgraph-day-15-microsoft-graph-in-dotnet-core-application/
-				IAuthenticationProvider rAuthenticationProvider = new ConsoleGraphTest.MsalAuthenticationProvider(rConfidentialClientApplicationBuilder, scopes.ToArray());
-				GraphServiceClient rGraphServiceClient = new GraphServiceClient(rAuthenticationProvider);
+				IAuthenticationProvider m_rAuthenticationProvider = new ConsoleGraphTest.MsalAuthenticationProvider(m_rConfidentialClientApplicationBuilder, m_asScopes.ToArray());
+				GraphServiceClient m_rGraphServiceClient = new GraphServiceClient(m_rAuthenticationProvider);
 				const string sUserPrincipalName = "Babsi05@CVSDemo05.onmicrosoft.com";
 				// Beispiel Day29 OneDriveHelperCall
 				//await UploadSmallFile(rGraphServiceClient, sUserPrincipalName);
@@ -207,11 +207,11 @@ namespace Demo_MS_Graph_SDK
 					try {
 						//rGraphServiceClient.Users[sUserPrincipalName].Drive.Root.ItemWithPath(rLargeFilePath).Search
 						//TODO_FR 350 UploadSession - finden oder erzeugen
-						rUploadSession = await rGraphServiceClient.Users[sUserPrincipalName].Drive.Root.ItemWithPath(rLargeFilePath).CreateUploadSession().Request().PostAsync();
+						rUploadSession = await m_rGraphServiceClient.Users[sUserPrincipalName].Drive.Root.ItemWithPath(rLargeFilePath).CreateUploadSession().Request().PostAsync();
 						if (rUploadSession != null) {
 							// Chunk size must be divisible by 320KiB, our chunk size will be slightly more than 1MB
 							int maxSizeChunk = (320 * 1024) * 4;
-							ChunkedUploadProvider rChunkedUploadProvider = new ChunkedUploadProvider(rUploadSession, rGraphServiceClient, rFileStream, maxSizeChunk);
+							ChunkedUploadProvider rChunkedUploadProvider = new ChunkedUploadProvider(rUploadSession, m_rGraphServiceClient, rFileStream, maxSizeChunk);
 							var rvUploadChunkRequests = rChunkedUploadProvider.GetUploadChunkRequests();
 							var rvExceptions = new List<Exception>();
 							var abyteReadBuffer = new byte[maxSizeChunk];
@@ -278,6 +278,7 @@ namespace Demo_MS_Graph_SDK
 		private void m_rButtonDownload_Click(object sender, EventArgs e)
 		{
 			//TODO_FR Download file für Id in m_rTextBoxId.Text 
+			// https://docs.microsoft.com/en-us/graph/api/driveitem-get-content?view=graph-rest-1.0&tabs=csharp
 		}
 	}
 }
