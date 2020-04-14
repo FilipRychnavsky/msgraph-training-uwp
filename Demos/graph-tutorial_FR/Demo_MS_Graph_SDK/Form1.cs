@@ -203,28 +203,32 @@ namespace Demo_MS_Graph_SDK
 				{
 					DriveItem rDriveItem_uploadedFile = null;
 					FileStream rFileStream = new FileStream(rLargeFilePath, FileMode.Open);
-//rGraphServiceClient.Users[sUserPrincipalName].Drive.Root.ItemWithPath(rLargeFilePath).Search
-//TODO_FR 350 UploadSession - finden oder erzeugen
-					UploadSession rUploadSession = await rGraphServiceClient.Users[sUserPrincipalName].Drive.Root.ItemWithPath(rLargeFilePath).CreateUploadSession().Request().PostAsync();
-					if (rUploadSession != null) {
-						// Chunk size must be divisible by 320KiB, our chunk size will be slightly more than 1MB
-						int maxSizeChunk = (320 * 1024) * 4;
-						ChunkedUploadProvider rChunkedUploadProvider = new ChunkedUploadProvider(rUploadSession, rGraphServiceClient, rFileStream, maxSizeChunk);
-						var rvUploadChunkRequests = rChunkedUploadProvider.GetUploadChunkRequests();
-						var rvExceptions = new List<Exception>();
-						var abyteReadBuffer = new byte[maxSizeChunk];
-						foreach (var rUploadChungRequest in rvUploadChunkRequests) {
-							var rUploadChunkResult = await rChunkedUploadProvider.GetChunkRequestResponseAsync(rUploadChungRequest, rvExceptions);
+					try {
+						//rGraphServiceClient.Users[sUserPrincipalName].Drive.Root.ItemWithPath(rLargeFilePath).Search
+						//TODO_FR 350 UploadSession - finden oder erzeugen
+						UploadSession rUploadSession = await rGraphServiceClient.Users[sUserPrincipalName].Drive.Root.ItemWithPath(rLargeFilePath).CreateUploadSession().Request().PostAsync();
+						if (rUploadSession != null) {
+							// Chunk size must be divisible by 320KiB, our chunk size will be slightly more than 1MB
+							int maxSizeChunk = (320 * 1024) * 4;
+							ChunkedUploadProvider rChunkedUploadProvider = new ChunkedUploadProvider(rUploadSession, rGraphServiceClient, rFileStream, maxSizeChunk);
+							var rvUploadChunkRequests = rChunkedUploadProvider.GetUploadChunkRequests();
+							var rvExceptions = new List<Exception>();
+							var abyteReadBuffer = new byte[maxSizeChunk];
+							foreach (var rUploadChungRequest in rvUploadChunkRequests) {
+								var rUploadChunkResult = await rChunkedUploadProvider.GetChunkRequestResponseAsync(rUploadChungRequest, rvExceptions);
 
-							if (rUploadChunkResult.UploadSucceeded) {
-								rDriveItem_uploadedFile = rUploadChunkResult.ItemResponse;
+								if (rUploadChunkResult.UploadSucceeded) {
+									rDriveItem_uploadedFile = rUploadChunkResult.ItemResponse;
+								}
 							}
 						}
+					} catch (Exception rException) {
+						throw rException;
+					} finally {
+						rFileStream.Close();
+						rFileStream.Dispose();
+						//TODO_FR 360  close update session
 					}
-//TODO_FR 340 UploadSession try Catch
-					rFileStream.Close();
-					rFileStream.Dispose();
-//TODO_FR 360  close update session
 
 					//TODO_FR 430 Id der Datei merken, bzw. etwas, mit dem ich die Datei herunterladen kann.
 					if (rDriveItem_uploadedFile != null) {
