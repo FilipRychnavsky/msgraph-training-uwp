@@ -174,7 +174,7 @@ namespace Demo_MS_Graph_SDK
 		private async void m_rButtonUploadExcel_Click(object sender, EventArgs e)
 		{
 			// Doku in SharePoint: https://alphaplan.sharepoint.com/sites/Entwicklung/_layouts/15/Doc.aspx?sourcedoc={ecab1635-5b06-4767-8259-a963bcc3e8f7}&action=edit&wd=target%28Brainstorming.one%7C72cf04d9-f05e-4b91-afc5-be7625335627%2FDemo%20-%20Datei%20hochladen%7Cd5108952-e36f-49ef-be5c-9015928bbaf1%2F%29&wdorigin=703
-			m_rTextBoxResult.Text += System.Environment.NewLine + "m_rButtonExcel_Click Start" + System.Environment.NewLine;
+			m_rTextBoxResult.Text += System.Environment.NewLine + "Upload Start:" + System.Environment.NewLine;
 			try {
 				string sAppId = OAuth_ApplicationPermissions.AppId; //Dient als ClientID Parameter
 				string sClientSecret = OAuth_ApplicationPermissions.Secret;
@@ -226,10 +226,14 @@ namespace Demo_MS_Graph_SDK
 					} catch (Exception rException) {
 						throw rException;
 					} finally {
-						rFileStream.Close();
-						rFileStream.Dispose();
+						if (rFileStream != null) {
+							rFileStream.Close();
+							rFileStream.Dispose();
+						}
 						//TODO_FR 360  cancel rUploadSession
-						m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}ExpirationDateTime: {rUploadSession.ExpirationDateTime}: ");
+						if (rUploadSession != null) {
+							m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}ExpirationDateTime: {rUploadSession.ExpirationDateTime}: ");
+						}
 					}
 
 					if (rDriveItem_uploadedFile != null) {
@@ -244,7 +248,7 @@ namespace Demo_MS_Graph_SDK
 					}
 				}
 			} catch (Microsoft.Graph.ServiceException rException) {
-				m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Exception in m_rButton_OAuth20_Click:{System.Environment.NewLine}");
+				m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Exception in Upload:{System.Environment.NewLine}");
 				if (rException.InnerException != null) {
 					m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Inner Exception:{System.Environment.NewLine}{rException.InnerException.Message}");
 				} else {
@@ -252,7 +256,7 @@ namespace Demo_MS_Graph_SDK
 					m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Code: {rException.StatusCode}");
 				}
 			} catch (System.Exception rException) {
-				m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Exception in m_rButton_OAuth20_Click:\n{rException.Message}");
+				m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Exception in Upload:\n{rException.Message}");
 			}
 		}
 
@@ -271,13 +275,71 @@ namespace Demo_MS_Graph_SDK
 			try {
 				VisitLink();
 			} catch (Exception ex) {
-				MessageBox.Show("Unable to open link that was clicked.");
+				MessageBox.Show($"Unable to open link that was clicked. {ex.Message}");
 			}
 		}
 
-		private void m_rButtonDownload_Click(object sender, EventArgs e)
+		private async void m_rButtonDownload_Click(object sender, EventArgs e)
 		{
 			//TODO_FR Download file für Id in m_rTextBoxId.Text 
+			m_rTextBoxResult.Text += System.Environment.NewLine + "Download Start:" + System.Environment.NewLine;
+			try {
+				string sAppId = OAuth_ApplicationPermissions.AppId; //Dient als ClientID Parameter
+				string sClientSecret = OAuth_ApplicationPermissions.Secret;
+				//Redirect url habe ich von dem Blog - Day 25 geschrieben; ich weiß nicht, wie weit wichtig es ist
+				string sRedirectUri = "https://localhost:8080";
+				string sInstanceOfAzure = "https://login.microsoftonline.com/{0}";
+				string sAuthority = String.Format(System.Globalization.CultureInfo.InvariantCulture, sInstanceOfAzure, OAuth_ApplicationPermissions.Tenant);
+				var rConfidentialClientApplicationBuilder = ConfidentialClientApplicationBuilder.Create(sAppId)
+																										.WithAuthority(sAuthority)
+																										.WithRedirectUri(sRedirectUri)
+																										.WithClientSecret(sClientSecret)
+																										.Build();
+				// With client credentials flows the scopes is ALWAYS of the shape "resource/.default", as the 
+				// application permissions need to be set statically (in the portal or by PowerShell), and then granted by
+				// a tenant administrator. 
+				string[] scopes = new string[] { $"{OAuth_ApplicationPermissions.ApiUrl}.default" };
+				// ConsoleGraphTest.MsalAuthenticationProvider wurde von https://developer.microsoft.com/en-us/graph/blogs/30daysmsgraph-day-15-microsoft-graph-in-dotnet-core-application/
+				IAuthenticationProvider rAuthenticationProvider = new ConsoleGraphTest.MsalAuthenticationProvider(rConfidentialClientApplicationBuilder, scopes.ToArray());
+				GraphServiceClient rGraphServiceClient = new GraphServiceClient(rAuthenticationProvider);
+				const string sUserPrincipalName = "Babsi05@CVSDemo05.onmicrosoft.com";
+				// Beispiel Day29 OneDriveHelperCall
+				//await UploadSmallFile(rGraphServiceClient, sUserPrincipalName);
+				const string rLargeFilePath = @"SampleFiles\Demo FR.xlsx";
+				// Excel als	large file upload in session hochladen
+				m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Excel Datei: ");
+				{
+					FileStream rFileStream = null;
+					try {
+						// Wieder eine Art Impersonifizierung auf sUserPrincipalName
+						System.IO.Stream rStream = await rGraphServiceClient.Users[sUserPrincipalName].Drive.Items[m_rTextBoxId.Text].Content
+							.Request()
+							.GetAsync();
+						rFileStream = System.IO.File.Create(rLargeFilePath);
+						rStream.Seek(0, SeekOrigin.Begin);
+						rStream.CopyTo(rFileStream);
+						rFileStream.Close();
+						m_rTextBoxResult.Text += System.Environment.NewLine + "Download Ende" + System.Environment.NewLine;
+					} catch (Exception rException) {
+						throw rException;
+					} finally {
+						if (rFileStream != null) {
+							rFileStream.Close();
+							rFileStream.Dispose();
+						}
+					}
+				}
+			} catch (Microsoft.Graph.ServiceException rException) {
+				m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Exception in Download:{System.Environment.NewLine}");
+				if (rException.InnerException != null) {
+					m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Inner Exception:{System.Environment.NewLine}{rException.InnerException.Message}");
+				} else {
+					m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}{rException.Message}");
+					m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Code: {rException.StatusCode}");
+				}
+			} catch (System.Exception rException) {
+				m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Exception in Download:\n{rException.Message}");
+			}
 		}
 	}
 }
