@@ -33,7 +33,7 @@
 			this.m_rButtonExcel = new System.Windows.Forms.Button();
 			this.m_rLabelId = new System.Windows.Forms.Label();
 			this.m_rTextBoxId = new System.Windows.Forms.TextBox();
-			this.m_rLabelLink = new System.Windows.Forms.Label();
+			this.m_rLabelForLink = new System.Windows.Forms.Label();
 			this.m_rLinkLabel = new System.Windows.Forms.LinkLabel();
 			this.SuspendLayout();
 			// 
@@ -102,14 +102,14 @@
 			this.m_rTextBoxId.Size = new System.Drawing.Size(296, 31);
 			this.m_rTextBoxId.TabIndex = 5;
 			// 
-			// m_rLabelLink
+			// m_rLabelForLink
 			// 
-			this.m_rLabelLink.AutoSize = true;
-			this.m_rLabelLink.Location = new System.Drawing.Point(50, 392);
-			this.m_rLabelLink.Name = "m_rLabelLink";
-			this.m_rLabelLink.Size = new System.Drawing.Size(58, 25);
-			this.m_rLabelLink.TabIndex = 6;
-			this.m_rLabelLink.Text = "Link:";
+			this.m_rLabelForLink.AutoSize = true;
+			this.m_rLabelForLink.Location = new System.Drawing.Point(50, 392);
+			this.m_rLabelForLink.Name = "m_rLabelForLink";
+			this.m_rLabelForLink.Size = new System.Drawing.Size(58, 25);
+			this.m_rLabelForLink.TabIndex = 6;
+			this.m_rLabelForLink.Text = "Link:";
 			// 
 			// m_rLinkLabel
 			// 
@@ -125,7 +125,7 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1600, 865);
 			this.Controls.Add(this.m_rLinkLabel);
-			this.Controls.Add(this.m_rLabelLink);
+			this.Controls.Add(this.m_rLabelForLink);
 			this.Controls.Add(this.m_rTextBoxId);
 			this.Controls.Add(this.m_rLabelId);
 			this.Controls.Add(this.m_rButtonExcel);
@@ -147,7 +147,7 @@
 		private System.Windows.Forms.Button m_rButtonExcel;
 		private System.Windows.Forms.Label m_rLabelId;
 		private System.Windows.Forms.TextBox m_rTextBoxId;
-		private System.Windows.Forms.Label m_rLabelLink;
+		private System.Windows.Forms.Label m_rLabelForLink;
 		private System.Windows.Forms.LinkLabel m_rLinkLabel;
 	}
 }
