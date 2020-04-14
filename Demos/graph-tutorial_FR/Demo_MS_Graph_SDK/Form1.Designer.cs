@@ -31,6 +31,10 @@
 			this.m_rButton_OAuth20 = new System.Windows.Forms.Button();
 			this.m_rButtonConnect_InteractiveAuthenticationProvider = new System.Windows.Forms.Button();
 			this.m_rButtonExcel = new System.Windows.Forms.Button();
+			this.m_rLabelId = new System.Windows.Forms.Label();
+			this.m_rTextBoxId = new System.Windows.Forms.TextBox();
+			this.m_rLabelLink = new System.Windows.Forms.Label();
+			this.m_rLinkLabel = new System.Windows.Forms.LinkLabel();
 			this.SuspendLayout();
 			// 
 			// m_rTextBoxResult
@@ -82,11 +86,48 @@
 			this.m_rButtonExcel.UseVisualStyleBackColor = false;
 			this.m_rButtonExcel.Click += new System.EventHandler(this.m_rButtonUploadExcel_Click);
 			// 
+			// m_rLabelId
+			// 
+			this.m_rLabelId.AutoSize = true;
+			this.m_rLabelId.Location = new System.Drawing.Point(55, 349);
+			this.m_rLabelId.Name = "m_rLabelId";
+			this.m_rLabelId.Size = new System.Drawing.Size(35, 25);
+			this.m_rLabelId.TabIndex = 4;
+			this.m_rLabelId.Text = "Id:";
+			// 
+			// m_rTextBoxId
+			// 
+			this.m_rTextBoxId.Location = new System.Drawing.Point(162, 342);
+			this.m_rTextBoxId.Name = "m_rTextBoxId";
+			this.m_rTextBoxId.Size = new System.Drawing.Size(296, 31);
+			this.m_rTextBoxId.TabIndex = 5;
+			// 
+			// m_rLabelLink
+			// 
+			this.m_rLabelLink.AutoSize = true;
+			this.m_rLabelLink.Location = new System.Drawing.Point(50, 392);
+			this.m_rLabelLink.Name = "m_rLabelLink";
+			this.m_rLabelLink.Size = new System.Drawing.Size(58, 25);
+			this.m_rLabelLink.TabIndex = 6;
+			this.m_rLabelLink.Text = "Link:";
+			// 
+			// m_rLinkLabel
+			// 
+			this.m_rLinkLabel.AutoSize = true;
+			this.m_rLinkLabel.Location = new System.Drawing.Point(157, 391);
+			this.m_rLinkLabel.Name = "m_rLinkLabel";
+			this.m_rLinkLabel.Size = new System.Drawing.Size(0, 25);
+			this.m_rLinkLabel.TabIndex = 7;
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1600, 865);
+			this.Controls.Add(this.m_rLinkLabel);
+			this.Controls.Add(this.m_rLabelLink);
+			this.Controls.Add(this.m_rTextBoxId);
+			this.Controls.Add(this.m_rLabelId);
 			this.Controls.Add(this.m_rButtonExcel);
 			this.Controls.Add(this.m_rButton_OAuth20);
 			this.Controls.Add(this.m_rTextBoxResult);
@@ -104,6 +145,10 @@
 		private System.Windows.Forms.Button m_rButton_OAuth20;
 		private System.Windows.Forms.Button m_rButtonConnect_InteractiveAuthenticationProvider;
 		private System.Windows.Forms.Button m_rButtonExcel;
+		private System.Windows.Forms.Label m_rLabelId;
+		private System.Windows.Forms.TextBox m_rTextBoxId;
+		private System.Windows.Forms.Label m_rLabelLink;
+		private System.Windows.Forms.LinkLabel m_rLinkLabel;
 	}
 }
 
