@@ -148,8 +148,7 @@ namespace Demo_MS_Graph_SDK
 		}
 
 // OAuth 2.0 ClientSecret
-//TODO_FR rename UploadExcel
-		private async void m_rButtonExcel_Click(object sender, EventArgs e)
+		private async void m_rButtonUploadExcel_Click(object sender, EventArgs e)
 		{
 			// Doku in SharePoint: https://alphaplan.sharepoint.com/sites/Entwicklung/_layouts/15/Doc.aspx?sourcedoc={ecab1635-5b06-4767-8259-a963bcc3e8f7}&action=edit&wd=target%28Brainstorming.one%7C72cf04d9-f05e-4b91-afc5-be7625335627%2FDemo%20-%20Datei%20hochladen%7Cd5108952-e36f-49ef-be5c-9015928bbaf1%2F%29&wdorigin=703
 			m_rTextBoxResult.Text += System.Environment.NewLine + "m_rButtonExcel_Click Start" + System.Environment.NewLine;
@@ -236,5 +235,6 @@ namespace Demo_MS_Graph_SDK
 				m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Exception in m_rButton_OAuth20_Click:\n{rException.Message}");
 			}
 		}
+
 	}
 }
