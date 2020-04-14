@@ -203,6 +203,8 @@ namespace Demo_MS_Graph_SDK
 				{
 					DriveItem rDriveItem_uploadedFile = null;
 					FileStream rFileStream = new FileStream(rLargeFilePath, FileMode.Open);
+//rGraphServiceClient.Users[sUserPrincipalName].Drive.Root.ItemWithPath(rLargeFilePath).Search
+//TODO_FR 350 UploadSession - finden oder erzeugen
 					UploadSession rUploadSession = await rGraphServiceClient.Users[sUserPrincipalName].Drive.Root.ItemWithPath(rLargeFilePath).CreateUploadSession().Request().PostAsync();
 					if (rUploadSession != null) {
 						// Chunk size must be divisible by 320KiB, our chunk size will be slightly more than 1MB
@@ -219,8 +221,11 @@ namespace Demo_MS_Graph_SDK
 							}
 						}
 					}
+//TODO_FR 340 UploadSession try Catch
 					rFileStream.Close();
 					rFileStream.Dispose();
+//TODO_FR 360  close update session
+
 					//TODO_FR 430 Id der Datei merken, bzw. etwas, mit dem ich die Datei herunterladen kann.
 					if (rDriveItem_uploadedFile != null) {
 						Console.WriteLine($"{System.Environment.NewLine}Uploaded file {rLargeFilePath} to {rDriveItem_uploadedFile.WebUrl}.");
