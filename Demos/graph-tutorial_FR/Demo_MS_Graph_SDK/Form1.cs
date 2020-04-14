@@ -154,46 +154,28 @@ namespace Demo_MS_Graph_SDK
 			m_rTextBoxResult.Text += System.Environment.NewLine + "m_rButtonExcel_Click Start" + System.Environment.NewLine;
 			//TODO_FR 650 Den Code auch in einer VM in der cloud testen (wegen Packages; was Borja noch installieren muss)
 			try {
-				string sAppId					= OAuth_ApplicationPermissions.AppId; //Dient als ClientID Parameter
-				string sClientSecret	= OAuth_ApplicationPermissions.Secret;
+				string sAppId = OAuth_ApplicationPermissions.AppId; //Dient als ClientID Parameter
+				string sClientSecret = OAuth_ApplicationPermissions.Secret;
 				//Redirect url habe ich von dem Blog - Day 25 geschrieben; ich weiß nicht, wie weit wichtig es ist
-				string sRedirectUri		= "https://localhost:8080";
+				string sRedirectUri = "https://localhost:8080";
 				string sInstanceOfAzure = "https://login.microsoftonline.com/{0}";
-				string sAuthority			=	String.Format(System.Globalization.CultureInfo.InvariantCulture, sInstanceOfAzure, OAuth_ApplicationPermissions.Tenant);
-        var rConfidentialClientApplicationBuilder = ConfidentialClientApplicationBuilder.Create(sAppId)
-                                                    .WithAuthority(sAuthority)
-                                                    .WithRedirectUri(sRedirectUri)
-                                                    .WithClientSecret(sClientSecret)
-                                                    .Build();
+				string sAuthority = String.Format(System.Globalization.CultureInfo.InvariantCulture, sInstanceOfAzure, OAuth_ApplicationPermissions.Tenant);
+				var rConfidentialClientApplicationBuilder = ConfidentialClientApplicationBuilder.Create(sAppId)
+																										.WithAuthority(sAuthority)
+																										.WithRedirectUri(sRedirectUri)
+																										.WithClientSecret(sClientSecret)
+																										.Build();
 				// With client credentials flows the scopes is ALWAYS of the shape "resource/.default", as the 
 				// application permissions need to be set statically (in the portal or by PowerShell), and then granted by
 				// a tenant administrator. 
 				string[] scopes = new string[] { $"{OAuth_ApplicationPermissions.ApiUrl}.default" };
 				// ConsoleGraphTest.MsalAuthenticationProvider wurde von https://developer.microsoft.com/en-us/graph/blogs/30daysmsgraph-day-15-microsoft-graph-in-dotnet-core-application/
 				IAuthenticationProvider rAuthenticationProvider = new ConsoleGraphTest.MsalAuthenticationProvider(rConfidentialClientApplicationBuilder, scopes.ToArray());
-				GraphServiceClient rGraphServiceClient = new  GraphServiceClient(rAuthenticationProvider);
+				GraphServiceClient rGraphServiceClient = new GraphServiceClient(rAuthenticationProvider);
 				const string sUserPrincipalName = "Babsi05@CVSDemo05.onmicrosoft.com";
 				// Beispiel Day29 OneDriveHelperCall
-				const string sSmallFilePath = @"SampleFiles\SmallFile.txt";
-				//const string rLargeFilePath = @"SampleFiles\LargeFile.txt";
+				await UploadSmallFile(rGraphServiceClient, sUserPrincipalName);
 				const string rLargeFilePath = @"SampleFiles\Demo FR.xlsx";
-				// Wegen der Freigabe von Instanzen von FileStream habe ich sie in code Blöcke verschoben
-				{
-					DriveItem rDriveItem_uploadedFile = null;
-					FileStream rFileStream = new FileStream(sSmallFilePath, FileMode.Open);
-					//uploadedFile = (await rGraphServiceClient.Me.Drive.Root.ItemWithPath(smallFilePath).Content.Request().PutAsync<DriveItem>(fileStream ));
-					// Im Vergleich zum Beispiel Day 29 (Me.Drive.Root) verwende ich Users[sUserPrincipalName].Drive.Root
-					rDriveItem_uploadedFile = (await rGraphServiceClient.Users[sUserPrincipalName].Drive.Root.ItemWithPath(sSmallFilePath).Content.Request().PutAsync<DriveItem>(rFileStream));
-					rFileStream.Close();
-					rFileStream.Dispose();
-					if (rDriveItem_uploadedFile != null) {
-						m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Uploaded file {sSmallFilePath} to {rDriveItem_uploadedFile.WebUrl}. {rDriveItem_uploadedFile.Id}");
-						Console.WriteLine($"Uploaded file {sSmallFilePath} to {rDriveItem_uploadedFile.WebUrl}.");
-					} else {
-						m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Failure uploading {sSmallFilePath}");
-						Console.WriteLine($"Failure uploading {sSmallFilePath}");
-					}
-				}
 				// Excel als	large file upload in session hochladen
 				{
 					DriveItem rDriveItem_uploadedFile = null;
@@ -216,7 +198,7 @@ namespace Demo_MS_Graph_SDK
 					}
 					rFileStream.Close();
 					rFileStream.Dispose();
-						//TODO_FR 430 Id der Datei merken, bzw. etwas, mit dem ich die Datei herunterladen kann.
+					//TODO_FR 430 Id der Datei merken, bzw. etwas, mit dem ich die Datei herunterladen kann.
 					if (rDriveItem_uploadedFile != null) {
 						Console.WriteLine($"{System.Environment.NewLine}Uploaded file {rLargeFilePath} to {rDriveItem_uploadedFile.WebUrl}.");
 						m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Excel Datei: ");
@@ -242,6 +224,30 @@ namespace Demo_MS_Graph_SDK
 				m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Exception in m_rButton_OAuth20_Click:\n{rException.Message}");
 			}
 		}
+
+		private async Task UploadSmallFile(GraphServiceClient rGraphServiceClient, string sUserPrincipalName)
+		{
+			const string sSmallFilePath = @"SampleFiles\SmallFile.txt";
+			//const string rLargeFilePath = @"SampleFiles\LargeFile.txt";
+			// Wegen der Freigabe von Instanzen von FileStream habe ich sie in code Blöcke verschoben
+			{
+				DriveItem rDriveItem_uploadedFile = null;
+				FileStream rFileStream = new FileStream(sSmallFilePath, FileMode.Open);
+				//uploadedFile = (await rGraphServiceClient.Me.Drive.Root.ItemWithPath(smallFilePath).Content.Request().PutAsync<DriveItem>(fileStream ));
+				// Im Vergleich zum Beispiel Day 29 (Me.Drive.Root) verwende ich Users[sUserPrincipalName].Drive.Root
+				rDriveItem_uploadedFile = (await rGraphServiceClient.Users[sUserPrincipalName].Drive.Root.ItemWithPath(sSmallFilePath).Content.Request().PutAsync<DriveItem>(rFileStream));
+				rFileStream.Close();
+				rFileStream.Dispose();
+				if (rDriveItem_uploadedFile != null) {
+					m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Uploaded file {sSmallFilePath} to {rDriveItem_uploadedFile.WebUrl}. {rDriveItem_uploadedFile.Id}");
+					Console.WriteLine($"Uploaded file {sSmallFilePath} to {rDriveItem_uploadedFile.WebUrl}.");
+				} else {
+					m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Failure uploading {sSmallFilePath}");
+					Console.WriteLine($"Failure uploading {sSmallFilePath}");
+				}
+			}
+		}
+
 		private void VisitLink()
 		{
 			// https://docs.microsoft.com/en-us/dotnet/framework/winforms/controls/link-to-an-object-or-web-page-with-wf-linklabel-control
