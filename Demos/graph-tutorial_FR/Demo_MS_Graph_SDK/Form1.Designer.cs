@@ -114,10 +114,12 @@
 			// m_rLinkLabel
 			// 
 			this.m_rLinkLabel.AutoSize = true;
+			this.m_rLinkLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
 			this.m_rLinkLabel.Location = new System.Drawing.Point(157, 391);
 			this.m_rLinkLabel.Name = "m_rLinkLabel";
 			this.m_rLinkLabel.Size = new System.Drawing.Size(0, 25);
 			this.m_rLinkLabel.TabIndex = 7;
+			this.m_rLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.m_rLinkLabel_LinkClicked);
 			// 
 			// Form1
 			// 

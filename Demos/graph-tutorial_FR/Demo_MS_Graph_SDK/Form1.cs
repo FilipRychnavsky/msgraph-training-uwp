@@ -239,6 +239,25 @@ namespace Demo_MS_Graph_SDK
 				m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Exception in m_rButton_OAuth20_Click:\n{rException.Message}");
 			}
 		}
+		private void VisitLink()
+		{
+			// https://docs.microsoft.com/en-us/dotnet/framework/winforms/controls/link-to-an-object-or-web-page-with-wf-linklabel-control
+			// Change the color of the link text by setting LinkVisited
+			// to true.
+			m_rLinkLabel.LinkVisited = true;
+			//Call the Process.Start method to open the default browser
+			//with a URL:
+			System.Diagnostics.Process.Start(m_rLinkLabel.Text);
+		}
+		private void m_rLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+		{
+			try {
+				VisitLink();
+			} catch (Exception ex) {
+				MessageBox.Show("Unable to open link that was clicked.");
+			}
+		}
+
 
 	}
 }
