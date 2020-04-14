@@ -24,9 +24,11 @@ namespace Demo_MS_Graph_SDK
 {
 	public partial class Form1 : Form
 	{
+		private string m_sExcelFileId;
 		public Form1()
 		{
 			InitializeComponent();
+			m_sExcelFileId = "";
 		}
 
 		IPublicClientApplication GetPublicClientApplication()
@@ -219,7 +221,10 @@ namespace Demo_MS_Graph_SDK
 						//TODO_FR 430 Id der Datei merken, bzw. etwas, mit dem ich die Datei herunterladen kann.
 					if (rDriveItem_uploadedFile != null) {
 						Console.WriteLine($"{System.Environment.NewLine}Uploaded file {rLargeFilePath} to {rDriveItem_uploadedFile.WebUrl}.");
+						m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Excel Datei: ");
 						m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Uploaded file {rLargeFilePath} to {rDriveItem_uploadedFile.WebUrl}.");
+						m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Id: {rDriveItem_uploadedFile.Id}");
+						m_sExcelFileId = rDriveItem_uploadedFile.Id;
 					} else {
 						Console.WriteLine($"Failure uploading {rLargeFilePath}");
 						m_rTextBoxResult.Text += System.String.Format($"{System.Environment.NewLine}Failure uploading {rLargeFilePath}");
