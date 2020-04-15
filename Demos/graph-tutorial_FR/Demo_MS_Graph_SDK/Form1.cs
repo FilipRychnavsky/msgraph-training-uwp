@@ -281,7 +281,6 @@ namespace Demo_MS_Graph_SDK
 
 		private async void m_rButtonDownload_Click(object sender, EventArgs e)
 		{
-			//TODO_FR Download file für Id in m_rTextBoxId.Text 
 			m_rTextBoxResult.Text += System.Environment.NewLine + "Download Start:" + System.Environment.NewLine;
 			try {
 				string sAppId = OAuth_ApplicationPermissions.AppId; //Dient als ClientID Parameter
